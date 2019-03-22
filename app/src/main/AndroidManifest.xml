@@ -5,9 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
-            android:key="https://xivapi.com/item/1675?key=779c4437a51f43a5bb6dcd34"
-
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
