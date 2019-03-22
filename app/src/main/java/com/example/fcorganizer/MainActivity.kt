@@ -1,8 +1,8 @@
 package com.example.fcorganizer
 
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import com.example.fcorganizer.Controladores.Conexiones
 
 class MainActivity : AppCompatActivity() {
@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         var con = Conexiones()
-        con.getPersonaje("", "Ragnarok", this)
-
+        var charid = con.getPersonajeID("Izedra", "Argent","Ragnarok", this)
+        Log.d("ID----------", charid.toString())
     }
 }

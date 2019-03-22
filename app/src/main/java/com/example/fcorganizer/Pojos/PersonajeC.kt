@@ -1,6 +1,6 @@
 package com.example.fcorganizer.Pojos
 
 data class PersonajeC(
-    val Pagination: List<Int?>?,
+    val Pagination: Pagination,
     val Results: List<Resultado?>?
 )
