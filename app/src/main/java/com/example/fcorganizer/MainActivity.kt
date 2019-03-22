@@ -3,6 +3,7 @@ package com.example.fcorganizer
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.example.fcorganizer.Controladores.Conexiones
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,8 +11,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        AsyncTask.execute(Runnable {
+        var con = Conexiones()
+        con.getPersonaje("", "Ragnarok", this)
 
-        })
     }
 }

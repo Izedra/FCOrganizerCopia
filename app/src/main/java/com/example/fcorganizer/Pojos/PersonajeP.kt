@@ -2,7 +2,7 @@ package com.example.fcorganizer.Pojos
 
 import java.net.URL
 
-data class Personaje (
+data class PersonajeP (
     val Achievements: List<Achievement?>?,
     val Character: CharData?,
     val FreeCompany: FreeCompany?,
@@ -186,7 +186,7 @@ data class Personaje (
             val FeastMatches: Int?,
             val ID: Int?,
             val Name: String?,
-            val Rank: String?,
+            val Rank: Any?,
             val RankIcon: URL?,
             val Server: String?
         )
