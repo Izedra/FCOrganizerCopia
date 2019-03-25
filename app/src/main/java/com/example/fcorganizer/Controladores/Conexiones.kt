@@ -1,15 +1,21 @@
 package com.example.fcorganizer.Controladores
 
-import android.app.Activity
+import android.app.AlertDialog
 import android.util.Log
+import com.example.fcorganizer.MainActivity
 import com.example.fcorganizer.Pojos.PersonajeC
 import com.example.fcorganizer.Pojos.Resultado
+import com.example.fcorganizer.R
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.FileNotFoundException
 import java.net.URL
 
-class Conexiones: Thread() {
+class Conexiones() : Runnable {
+    override fun run() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private var url: String = "https://xivapi.com"
     private var texto: String = ""
 
@@ -39,6 +45,7 @@ class Conexiones: Thread() {
     */
 
     fun getServidores (): List<String>? {
+
         var lista: List<String> = emptyList()
         var tipo = object : TypeToken<List<String>>() {}.type
 
@@ -55,6 +62,7 @@ class Conexiones: Thread() {
                 Log.d("NullPointerException", ex.message)
             }
         }
+
         t.start()
 
         t.join()
@@ -68,31 +76,30 @@ class Conexiones: Thread() {
 
         var t = Thread {
             try {
-                //https://xivapi.com/character/search?name=[name]&server=[server]
-                texto = URL("$url/character/search?name=$nombre+$apellido&server=$servidor").readText()
-                listres = Gson().fromJson<PersonajeC>(texto, PersonajeC::class.java).Results
 
-                for (i in 0..listres!!.lastIndex) {
-                    if (listres!![i]!!.Name.toString() == "$nombre $apellido") {
-                        charid = listres!![i]!!.ID!!
-                        break
-                    }
+            //https://xivapi.com/character/search?name=[name]&server=[server]
+            texto = URL("$url/character/search?name=$nombre+$apellido&server=$servidor").readText()
+            listres = Gson().fromJson<PersonajeC>(texto, PersonajeC::class.java).Results
+
+            for (i in 0..listres!!.lastIndex) {
+                if (listres!![i]!!.Name.toString() == "$nombre $apellido") {
+                    charid = listres!![i]!!.ID!!
+                    break
                 }
-
-
-            } catch (ex: FileNotFoundException) {
-                Log.d("FileNotFoundException", "No se encuentra el personaje $nombre $apellido ni/o el servidor $servidor")
-
-                charid = 0
-            } catch (ex: NullPointerException) {
-                Log.d("NullPointerException", ex.message)
             }
-        }
-        t.start()
 
+        } catch (ex: FileNotFoundException) {
+            Log.d("FileNotFoundException", "No se encuentra el personaje $nombre $apellido ni/o el servidor $servidor")
+
+            charid = 0
+        } catch (ex: NullPointerException) {
+            Log.d("NullPointerException", ex.message)
+        }
+    }
+
+        t.run()
         t.join()
 
-//        Log.d("ID--------------", charid.toString())
         return charid
     }
 }
