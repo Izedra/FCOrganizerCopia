@@ -7,10 +7,6 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" app:srcCompat="@drawable/ffwallpaper2" android:id="@+id/imageView"
-            android:contentDescription="TODO"/>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -30,31 +26,31 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:id="@+id/et_personaje" android:hint="Nombre del personaje" android:inputType="text"
-                    android:background="@android:color/white" android:autofillHints="" tools:targetApi="o"/>
+                    android:background="@android:color/white" android:autofillHints="" tools:targetApi="o"
+                    android:text="Izedra Argent" android:textColor="@android:color/black"/>
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="37dp"/>
-            <EditText
+            <AutoCompleteTextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:ems="10"
-                    android:id="@+id/et_server" android:hint="Servidor" android:background="@android:color/white"
-                    android:autofillHints="" tools:targetApi="o"/>
+                    android:layout_height="wrap_content" android:id="@+id/ac_tv_Servers"
+                    android:background="@android:color/white" android:hint="Servidor"
+                    android:textColor="@android:color/black"/>
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="26dp"/>
             <Button
                     android:text="Entrar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/b_conectar"/>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bEntrar"/>
             <Space
                     android:layout_width="match_parent"
                     android:layout_height="31dp"/>
             <Button
                     android:text="Cerrar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/b_cerrar"/>
+                    android:layout_height="wrap_content" android:id="@+id/bCerrar"/>
         </LinearLayout>
         <Space
                 android:layout_width="100dp"

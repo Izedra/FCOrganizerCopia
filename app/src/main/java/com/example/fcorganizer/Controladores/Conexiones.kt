@@ -5,14 +5,13 @@ import android.util.Log
 import com.example.fcorganizer.Pojos.PersonajeC
 import com.example.fcorganizer.Pojos.Resultado
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.FileNotFoundException
 import java.net.URL
 
 class Conexiones: Thread() {
     private var url: String = "https://xivapi.com"
-    private var key: String = "key=974c583ec3794327ba1ffa16"
-
-
+    private var texto: String = ""
 
     /*
 
@@ -39,16 +38,38 @@ class Conexiones: Thread() {
 
     */
 
-    fun getPersonajeID (nombre: String, apellido: String, servidor: String, actividad: Activity): Int? {
+    fun getServidores (): List<String>? {
+        var lista: List<String> = emptyList()
+        var tipo = object : TypeToken<List<String>>() {}.type
 
-        var texto: String
+        var t = Thread {
+            try {
+                //https://xivapi.com/servers
+                texto = URL("$url/servers").readText()
+
+                lista = Gson().fromJson(texto, tipo)
+
+            } catch (ex: FileNotFoundException) {
+                Log.d("FileNotFoundException", "No se puede acceder a la lista de servidores")
+            } catch (ex: NullPointerException) {
+                Log.d("NullPointerException", ex.message)
+            }
+        }
+        t.start()
+
+        t.join()
+
+        return lista
+    }
+
+    fun getPersonajeID (nombre: String, apellido: String, servidor: String): Int? {
         var listres: List<Resultado?>?
         var charid: Int? = 0
 
         var t = Thread {
             try {
                 //https://xivapi.com/character/search?name=[name]&server=[server]
-                texto = URL("$url/character/search?name=$nombre+$apellido&server=$servidor&$key").readText()
+                texto = URL("$url/character/search?name=$nombre+$apellido&server=$servidor").readText()
                 listres = Gson().fromJson<PersonajeC>(texto, PersonajeC::class.java).Results
 
                 for (i in 0..listres!!.lastIndex) {
@@ -60,7 +81,9 @@ class Conexiones: Thread() {
 
 
             } catch (ex: FileNotFoundException) {
-                Log.d("FileNotFoundException", "No se encuentra el personaje $nombre ni/o el servidor $servidor")
+                Log.d("FileNotFoundException", "No se encuentra el personaje $nombre $apellido ni/o el servidor $servidor")
+
+                charid = 0
             } catch (ex: NullPointerException) {
                 Log.d("NullPointerException", ex.message)
             }

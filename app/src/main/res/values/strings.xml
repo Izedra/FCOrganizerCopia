@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">FC Organizer</string>
+    <string name="app_name">FFXIV - EC</string>
+    <string name="app_cabecera">FFXIV - Event Controller</string>
 </resources>
