@@ -10,13 +10,9 @@ import com.google.gson.Gson
 import java.io.FileNotFoundException
 import java.net.URL
 
-class GetPersonajeID(private val dialogo: Dialog, private val nombre: String, private val servidor: String): AsyncTask<Any?,Any?,Any?>() {
+class GetPersonajeID(private val nombre: String, private val servidor: String): AsyncTask<Any?,Any?,Any?>() {
 
     private var url: String = "https://xivapi.com/character/search"
-
-    override fun onPreExecute() {
-        dialogo.show()
-    }
 
     override fun doInBackground(vararg params: Any?): Any? {
 
@@ -48,13 +44,5 @@ class GetPersonajeID(private val dialogo: Dialog, private val nombre: String, pr
         }
 
         return charid
-    }
-
-    override fun onPostExecute(result: Any?) {
-        val getid = MainActivity::getPersonajeId
-        getid(MainActivity(), result)
-        Log.d("CHARID: ", result.toString())
-        dialogo.dismiss()
-
     }
 }

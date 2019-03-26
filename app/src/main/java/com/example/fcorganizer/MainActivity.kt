@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
+import com.example.fcorganizer.controladores.GetListaPersonajes
 import com.example.fcorganizer.controladores.ObtenerServidores
 import com.example.fcorganizer.controladores.GetPersonajeID
 import com.example.fcorganizer.pojos.PersonajeC
 import com.example.fcorganizer.pojos.PersonajeP
+import com.example.fcorganizer.pojos.Resultado
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -52,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             if (ac_tv_Servers.text.trim().count() > 0){
                 servidor = ac_tv_Servers.text.trim().toString()
             }
-            GetPersonajeID(dialogo, nombre, servidor).execute()
+            GetListaPersonajes(dialogo, nombre, servidor).execute()
         }
     }
 
@@ -71,13 +73,8 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    // FUNCIÓN QUE LLAMAMOS DESDE GetPersonajeID
-    fun getPersonajeId(int: Any?) {
-        charid = int as Int
-    }
-
-    // OBTENCIÓN
-    fun getPersonajes(personajes: List<PersonajeC>){
+    // OBTENCIÓN DEN UNA LISTA DE PERSONAJES PARA RELLENAR EL RECYCLER VIEW
+    fun getPersonajes(personajes: List<Resultado>){
 
     }
 
