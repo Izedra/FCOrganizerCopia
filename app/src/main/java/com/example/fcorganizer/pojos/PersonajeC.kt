@@ -1,4 +1,4 @@
-package com.example.fcorganizer.Pojos
+package com.example.fcorganizer.pojos
 
 data class PersonajeC(
     val Pagination: Pagination,

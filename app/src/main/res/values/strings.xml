@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">FFXIV - EC</string>
     <string name="app_cabecera">FFXIV - Event Controller</string>
+    <string name="info_string">PH del diálogo de información</string>
 </resources>

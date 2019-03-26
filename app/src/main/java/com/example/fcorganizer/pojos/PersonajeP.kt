@@ -1,4 +1,4 @@
-package com.example.fcorganizer.Pojos
+package com.example.fcorganizer.pojos
 
 import java.net.URL
 
