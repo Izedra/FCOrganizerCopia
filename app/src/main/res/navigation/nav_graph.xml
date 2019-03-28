@@ -5,9 +5,32 @@
             app:startDestination="@id/listasCreadas">
 
     <fragment android:id="@+id/fragmentCrearLista" android:name="com.example.fcorganizer.FragmentCrearLista"
-              android:label="fragment_fragment_crear_lista" tools:layout="@layout/fragment_fragment_crear_lista"/>
+              android:label="fragment_fragment_crear_lista" tools:layout="@layout/fragment_crear_lista">
+        <action android:id="@+id/action_fragmentCrearLista_to_crearListaRV" app:destination="@id/crearListaRV"
+                app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right">
+            <argument android:defaultValue="-1" android:name="charid"/>
+        </action>
+    </fragment>
+
     <fragment android:id="@+id/listasCreadas" android:name="com.example.fcorganizer.ListasCreadas"
               android:label="fragment_listas_creadas" tools:layout="@layout/fragment_listas_creadas">
-        <action android:id="@+id/action_listasCreadas_to_fragmentCrearLista" app:destination="@id/fragmentCrearLista"/>
+        <action android:id="@+id/action_listasCreadas_to_fragmentCrearLista" app:destination="@id/fragmentCrearLista"
+                app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"/>
+        <action android:id="@+id/action_listasCreadas_to_verLista" app:destination="@id/verLista"
+                app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"/>
     </fragment>
+
+    <fragment android:id="@+id/crearListaRV" android:name="com.example.fcorganizer.CrearListaRV"
+              android:label="fragment_crear_lista_rv" tools:layout="@layout/fragment_crear_lista_rv">
+        <action android:id="@+id/action_crearListaRV_to_listasCreadas" app:destination="@id/listasCreadas"
+                app:popUpToInclusive="true" app:popUpTo="@+id/listasCreadas"
+                app:popEnterAnim="@anim/anim_slide_in_left" app:popExitAnim="@anim/anim_slide_out_left"
+                app:enterAnim="@anim/anim_slide_in_right" app:exitAnim="@anim/anim_slide_out_right"/>
+        <argument android:name="charid" app:argType="integer" android:defaultValue="-1"/>
+    </fragment>
+    <fragment android:id="@+id/verLista" android:name="com.example.fcorganizer.VerLista"
+              android:label="fragment_ver_lista" tools:layout="@layout/fragment_ver_lista"/>
 </navigation>

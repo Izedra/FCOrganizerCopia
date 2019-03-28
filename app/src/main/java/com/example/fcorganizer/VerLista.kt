@@ -7,11 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavAction
-import androidx.navigation.Navigation
-import kotlinx.android.synthetic.main.fragment_crear_lista.*
-import kotlinx.android.synthetic.main.fragment_listas_creadas.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,13 +17,13 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [FragmentCrearLista.OnFragmentInteractionListener] interface
+ * [VerLista.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [FragmentCrearLista.newInstance] factory method to
+ * Use the [VerLista.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class FragmentCrearLista : Fragment() {
+class VerLista : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -47,21 +42,7 @@ class FragmentCrearLista : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_crear_lista, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        b_crear_id.setOnClickListener { llamadaCrearRV() }
-
-
-    }
-
-    fun llamadaCrearRV(){
-        var action = FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV()
-
-        Navigation.findNavController(view!!).navigate(action)
+        return inflater.inflate(R.layout.fragment_ver_lista, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,12 +87,12 @@ class FragmentCrearLista : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentCrearLista.
+         * @return A new instance of fragment VerLista.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            FragmentCrearLista().apply {
+            VerLista().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

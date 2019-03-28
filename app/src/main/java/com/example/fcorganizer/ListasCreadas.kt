@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.fragment_listas_creadas.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,6 +47,18 @@ class ListasCreadas : Fragment() {
         return inflater.inflate(R.layout.fragment_listas_creadas, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        b_principal.setOnClickListener {
+            llamadaCrearLista()
+        }
+    }
+
+    fun llamadaCrearLista(){
+        Navigation.findNavController(view!!).navigate(R.id.action_listasCreadas_to_fragmentCrearLista)
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
@@ -55,7 +69,7 @@ class ListasCreadas : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

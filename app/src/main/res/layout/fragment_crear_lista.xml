@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".FragmentCrearLista">
+    <Space
+            android:layout_width="170dp"
+            android:layout_height="match_parent" android:layout_weight="1"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="434dp"
+            android:layout_height="match_parent" android:layout_weight="1">
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="325dp"/>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:inputType="textPersonName"
+                android:text="Name"
+                android:ems="10"
+                android:id="@+id/editText2" android:background="@android:color/white"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="35dp"/>
+        <AutoCompleteTextView
+                android:text="AutoCompleteTextView"
+                android:layout_width="match_parent"
+                android:layout_height="37dp" android:id="@+id/autoCompleteTextView2"
+                android:background="@android:color/white"/>
+        <Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+        <Button
+                android:text="Crear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/b_crear_id"/>
+    </LinearLayout>
+    <Space
+            android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="170dp"/>
+</LinearLayout>
