@@ -2,4 +2,7 @@
     <string name="app_name">FFXIV - EC</string>
     <string name="app_cabecera">FFXIV - Event Controller</string>
     <string name="info_string">PH del diálogo de información</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

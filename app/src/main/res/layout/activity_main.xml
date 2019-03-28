@@ -1,61 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.ContentFrameLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-
-    <LinearLayout
-            android:orientation="horizontal"
+    <fragment
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <Space
-                android:layout_width="300dp"
-                android:layout_height="match_parent" android:layout_weight="1"/>
-        <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_weight="1">
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="252dp"/>
-            <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:id="@+id/et_personaje" android:hint="Nombre del personaje" android:inputType="text"
-                    android:background="@android:color/white" android:autofillHints="" tools:targetApi="o"
-                    android:text="Izedra Argent" android:textColor="@android:color/black"/>
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="37dp"/>
-            <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/ac_tv_Servers"
-                    android:background="@android:color/white"
-                    android:hint="Servidor"
-                    android:textColor="@android:color/black"
-                    android:singleLine="true"
-                    android:maxLength="14"/>
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="26dp"/>
-            <Button
-                    android:text="Entrar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/bEntrar"/>
-            <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="31dp"/>
-            <Button
-                    android:text="Cerrar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:id="@+id/bCerrar"/>
-        </LinearLayout>
-        <Space
-                android:layout_width="100dp"
-                android:layout_height="match_parent"/>
-    </LinearLayout>
-</android.support.v7.widget.ContentFrameLayout>
+            android:layout_height="match_parent" app:navGraph="@navigation/nav_graph" app:defaultNavHost="true"
+            android:id="@+id/fragment"/>
+</FrameLayout>
