@@ -56,7 +56,9 @@ class ListasCreadas : Fragment() {
     }
 
     fun llamadaCrearLista(){
+        ProgresoFragment().show(fragmentManager!!, "")
         Navigation.findNavController(view!!).navigate(R.id.action_listasCreadas_to_fragmentCrearLista)
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,6 +1,7 @@
 package com.example.fcorganizer.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.fcorganizer.pojos.Listas
@@ -13,12 +14,14 @@ interface DaoLista{
     @Query("SELECT * FROM Listas")
     fun getListas(): List<Listas>
 
-    // Saca todos los personajes de una lista, pasandole el id de esta
-    @Query("SELECT Personaje FROM Listado WHERE idListado = :id")
-    fun getListado(id: Int): List<Resultado>
-
+    // Inserta una nueva lista sacando los datos Nombre, Servidor y Avatar del personaje que la crea por pantalla
+    // (objeto Resultado obtenido en la primera consulta para obtener la id del personaje que la crea y de el obtener
+    // los miembros de su FC y su lista de amigos
     @Insert
-    fun insertLista(): Long
+    fun insertLista(res: Resultado): Long
 
+    // Borra una lista pasandole su Id (autogenerada)
+    @Delete
+    fun deleteLista(id: Int)
 
 }

@@ -20,7 +20,9 @@
                 app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"/>
         <action android:id="@+id/action_listasCreadas_to_verLista" app:destination="@id/verLista"
                 app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
-                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"/>
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right">
+            <argument android:defaultValue="-1" android:name="listid"/>
+        </action>
     </fragment>
 
     <fragment android:id="@+id/crearListaRV" android:name="com.example.fcorganizer.CrearListaRV"
@@ -32,5 +34,7 @@
         <argument android:name="charid" app:argType="integer" android:defaultValue="-1"/>
     </fragment>
     <fragment android:id="@+id/verLista" android:name="com.example.fcorganizer.VerLista"
-              android:label="fragment_ver_lista" tools:layout="@layout/fragment_ver_lista"/>
+              android:label="fragment_ver_lista" tools:layout="@layout/fragment_ver_lista">
+        <argument android:name="listid" app:argType="integer" android:defaultValue="-1"/>
+    </fragment>
 </navigation>
