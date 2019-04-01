@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
-abstract class MainActivity : AppCompatActivity(),
+class MainActivity : AppCompatActivity(),
     ListasCreadas.OnFragmentInteractionListener,
     FragmentCrearLista.OnFragmentInteractionListener,
     CrearListaRV.OnFragmentInteractionListener,
