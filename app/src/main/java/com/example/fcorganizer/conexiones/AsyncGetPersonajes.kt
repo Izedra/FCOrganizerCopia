@@ -52,5 +52,6 @@ class AsyncGetPersonajes(
         }
 
         return Gson().toJson(lista)
+
     }
 }
