@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavAction
 import androidx.navigation.Navigation
+import com.example.fcorganizer.conexiones.ObtenerServidores
 import kotlinx.android.synthetic.main.fragment_crear_lista.*
 import kotlinx.android.synthetic.main.fragment_listas_creadas.*
 
@@ -53,15 +55,19 @@ class FragmentCrearLista : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        val servers = ObtenerServidores().getServidores()
+        val arrAdap: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, servers)
+        ac_tv_servers.threshold = 0
+        ac_tv_servers.dropDownAnchor
+        ac_tv_servers.setAdapter(arrAdap)
+
         b_crear_id.setOnClickListener { llamadaCrearRV() }
 
 
     }
 
     fun llamadaCrearRV(){
-        var action = FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV()
-
-        Navigation.findNavController(view!!).navigate(action)
+        Navigation.findNavController(view!!).navigate(FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV())
     }
 
     // TODO: Rename method, update argument and hook method into UI event

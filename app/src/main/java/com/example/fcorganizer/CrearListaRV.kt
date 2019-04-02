@@ -49,13 +49,10 @@ class CrearListaRV : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        b_volver.setOnClickListener { llamadaMain() }
-
     }
 
     fun llamadaMain(){
-        Navigation.findNavController(view!!).navigate(R.id.action_crearListaRV_to_listasCreadas)
+        Navigation.findNavController(view!!).navigate(CrearListaRVDirections.actionCrearListaRVToListasCreadas())
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -1,4 +1,4 @@
-package com.example.fcorganizer.daos
+package com.example.fcorganizer.database
 
 import androidx.room.Dao
 import androidx.room.Delete

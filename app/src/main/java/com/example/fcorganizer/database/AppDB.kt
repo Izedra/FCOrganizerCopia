@@ -1,9 +1,9 @@
-package com.example.fcorganizer
+package com.example.fcorganizer.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.fcorganizer.daos.DaoLista
-import com.example.fcorganizer.daos.DaoListado
+import com.example.fcorganizer.database.DaoLista
+import com.example.fcorganizer.database.DaoListado
 import com.example.fcorganizer.pojos.Listado
 import com.example.fcorganizer.pojos.Listas
 
