@@ -13,29 +13,29 @@
             android:layout_height="match_parent" android:layout_weight="1">
         <Space
                 android:layout_width="match_parent"
-                android:layout_height="325dp"/>
+                android:layout_height="226dp"/>
         <EditText
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:inputType="textPersonName"
-                android:text="Name"
                 android:ems="10"
-                android:id="@+id/editText2" android:background="@android:color/white"/>
+                android:id="@+id/editText2" android:background="@android:color/white"
+                android:hint="Nombre del personaje"/>
         <Space
                 android:layout_width="match_parent"
                 android:layout_height="35dp"/>
         <AutoCompleteTextView
-                android:text="AutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="37dp" android:id="@+id/ac_tv_servers"
-                android:background="@android:color/white"/>
+                android:background="@android:color/white" android:hint="Servidor"
+                android:singleLine="true"/>
         <Space
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>
         <Button
-                android:text="Crear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/b_crear_id"/>
+                android:text="Crear lista"
+                android:layout_width="146dp"
+                android:layout_height="wrap_content" android:id="@+id/b_crear_id" android:layout_gravity="center"/>
     </LinearLayout>
     <Space
             android:layout_height="wrap_content" android:layout_weight="1" android:layout_width="170dp"/>

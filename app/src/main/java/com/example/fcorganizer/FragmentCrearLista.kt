@@ -3,17 +3,16 @@ package com.example.fcorganizer
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavAction
+import android.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.fcorganizer.conexiones.ObtenerServidores
 import kotlinx.android.synthetic.main.fragment_crear_lista.*
-import kotlinx.android.synthetic.main.fragment_listas_creadas.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,11 +29,14 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class FragmentCrearLista : Fragment() {
+class FragmentCrearLista : Fragment(){
+
+
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private val ID_FRAGMENTO: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,10 @@ class FragmentCrearLista : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.fragmentCrearLista).isVisible = false
     }
 
     override fun onCreateView(
@@ -55,8 +61,10 @@ class FragmentCrearLista : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = false
+
         val servers = ObtenerServidores().getServidores()
-        val arrAdap: ArrayAdapter<String> = ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, servers)
+        val arrAdap: ArrayAdapter<String> = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, servers!!)
         ac_tv_servers.threshold = 0
         ac_tv_servers.dropDownAnchor
         ac_tv_servers.setAdapter(arrAdap)
@@ -75,18 +83,21 @@ class FragmentCrearLista : Fragment() {
         listener?.onFragmentInteraction(uri)
     }
 
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
+        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = true
     }
 
     /**
@@ -104,6 +115,8 @@ class FragmentCrearLista : Fragment() {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
+
+
 
     companion object {
         /**

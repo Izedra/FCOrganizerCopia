@@ -4,27 +4,35 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
             app:startDestination="@id/listasCreadas">
 
+
+
     <fragment android:id="@+id/fragmentCrearLista" android:name="com.example.fcorganizer.FragmentCrearLista"
               android:label="Seleccionar Personaje" tools:layout="@layout/fragment_crear_lista">
         <action android:id="@+id/action_fragmentCrearLista_to_crearListaRV" app:destination="@id/crearListaRV"
                 app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
-                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right">
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"
+        >
             <argument android:defaultValue="-1" android:name="charid"/>
         </action>
-        <argument android:name="dialogo" app:argType="reference"/>
     </fragment>
+
+
 
     <fragment android:id="@+id/listasCreadas" android:name="com.example.fcorganizer.ListasCreadas"
               android:label="Listas Creadas" tools:layout="@layout/fragment_listas_creadas">
         <action android:id="@+id/action_listasCreadas_to_fragmentCrearLista" app:destination="@id/fragmentCrearLista"
                 app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
-                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"/>
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"
+        />
         <action android:id="@+id/action_listasCreadas_to_verLista" app:destination="@id/verLista"
                 app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
-                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right">
+                app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"
+        >
             <argument android:defaultValue="-1" android:name="listid"/>
         </action>
     </fragment>
+
+
 
     <fragment android:id="@+id/crearListaRV" android:name="com.example.fcorganizer.CrearListaRV"
               android:label="Crear Lista" tools:layout="@layout/fragment_crear_lista_rv">
@@ -34,8 +42,10 @@
                 app:enterAnim="@anim/anim_slide_in_right" app:exitAnim="@anim/anim_slide_out_right"/>
         <argument android:name="charid" app:argType="integer" android:defaultValue="-1"/>
     </fragment>
+
+
     <fragment android:id="@+id/verLista" android:name="com.example.fcorganizer.VerLista"
-              android:label="Ver/Editar Lista" tools:layout="@layout/fragment_ver_lista">
-        <argument android:name="listid" app:argType="integer" android:defaultValue="-1"/>
-    </fragment>
+              android:label="Ver/Editar Lista" tools:layout="@layout/fragment_ver_lista"/>
+
+
 </navigation>

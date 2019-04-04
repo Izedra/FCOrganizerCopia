@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.AsyncTask
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.NavController
-import com.example.fcorganizer.ListasCreadas
 import com.example.fcorganizer.ListasCreadasDirections
 import com.example.fcorganizer.pojos.PersonajeC
 import com.example.fcorganizer.pojos.PersonajeP
@@ -12,7 +11,7 @@ import com.example.fcorganizer.pojos.Resultado
 import com.google.gson.Gson
 import java.net.URL
 
-class AsyncGetPersonajes(
+class AsyncGet(
     private val dialogo: DialogFragment,
     private val prefs: SharedPreferences,
     private val findNavController: NavController
@@ -23,7 +22,7 @@ class AsyncGetPersonajes(
         super.onPostExecute(result)
         prefs.edit().putString("lista", result).apply()
         dialogo.dismiss()
-        findNavController.navigate(ListasCreadasDirections.actionListasCreadasToVerLista())
+        findNavController.navigate(ListasCreadasDirections.actionListasCreadasToFragmentCrearLista())
     }
 
     override fun doInBackground(vararg p0: Void?): String? {
@@ -31,9 +30,7 @@ class AsyncGetPersonajes(
 
         val resultados = Gson().fromJson(texto, PersonajeC::class.java).Results
 
-        println(resultados!![0]!!.ID)
-
-        val texto2 = URL("https://xivapi.com/character/${resultados[0]?.ID}?data=FR,FCM").readText()
+        val texto2 = URL("https://xivapi.com/character/${resultados?.get(0)?.ID}?data=FR,FCM").readText()
 
         val personaje = Gson().fromJson(texto2, PersonajeP::class.java)
 

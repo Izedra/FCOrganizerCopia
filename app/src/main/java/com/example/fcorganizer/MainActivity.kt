@@ -2,12 +2,18 @@ package com.example.fcorganizer
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.Navigation
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
     ListasCreadas.OnFragmentInteractionListener,
@@ -24,11 +30,25 @@ class MainActivity : AppCompatActivity(),
         val navController = findNavController(R.id.nav_host_fragment)
         navController.setGraph(R.navigation.nav_graph)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        findViewById<Toolbar>(R.id.toolbar)
-            .setupWithNavController(navController, appBarConfiguration)
+        var toolb = findViewById<Toolbar>(R.id.toolbar)
+        toolb.setupWithNavController(navController, appBarConfiguration)
+        toolb.inflateMenu(R.menu.toolbar_menu)
+        toolb.setOnMenuItemClickListener {onOptionsItemSelected(it)}
     }
 
-//    fun cambiarVentana(){
-//        Navigation.findNavController(findViewById(R.id.nav_host_fragment)).navigate(ListasCreadasDirections.actionListasCreadasToVerLista())
-//    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val navController = nav_host_fragment.findNavController()
+        return item!!.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        when(NavHostFragment.findNavController(nav_host_fragment).navigateUp()){
+            false -> moveTaskToBack(true)
+        }
+    }
 }
