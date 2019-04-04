@@ -31,7 +31,6 @@ class ListasCreadas : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    private val dialogo = ProgresoFragment()
     private val ID_FRAGMENTO: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +47,18 @@ class ListasCreadas : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_listas_creadas, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        b_principal.setOnClickListener {
+            llamadaCrearLista()
+        }
+    }
+
+    fun llamadaCrearLista(){
+        Navigation.findNavController(view!!).navigate(ListasCreadasDirections.actionListasCreadasToFragmentCrearLista())
     }
 
     // TODO: Rename method, update argument and hook method into UI event

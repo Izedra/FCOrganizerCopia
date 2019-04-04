@@ -8,9 +8,10 @@ import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Toolbar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.example.fcorganizer.conexiones.AsyncGet
 import com.example.fcorganizer.conexiones.ObtenerServidores
 import kotlinx.android.synthetic.main.fragment_crear_lista.*
 
@@ -36,6 +37,7 @@ class FragmentCrearLista : Fragment(){
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private val dialogo = ProgresoFragment()
     private val ID_FRAGMENTO: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,10 +52,7 @@ class FragmentCrearLista : Fragment(){
         menu.findItem(R.id.fragmentCrearLista).isVisible = false
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_crear_lista, container, false)
     }
@@ -75,7 +74,22 @@ class FragmentCrearLista : Fragment(){
     }
 
     fun llamadaCrearRV(){
-        Navigation.findNavController(view!!).navigate(FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV())
+        if (ac_tv_personaje.text.trim().count() > 0 && ac_tv_servers.text.trim().count() > 0) {
+
+            val personaje = ac_tv_personaje.text.toString()
+            val server = ac_tv_servers.text.toString().trim()
+
+            dialogo.show(fragmentManager!!, "")
+
+            val pref = this.activity!!.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+            pref.edit().putString("lista", "zyx").apply()
+
+            val toast = Toast.makeText(context, "Personaje no encontrado", Toast.LENGTH_SHORT)
+
+            AsyncGet(dialogo, pref, Navigation.findNavController(view!!), toast, personaje, server).execute()
+        } else {
+            Toast.makeText(context, "Introduzca un personaje y/o servidor", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

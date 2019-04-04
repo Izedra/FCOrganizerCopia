@@ -5,9 +5,11 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_crear_lista_rv.*
 
 
@@ -48,8 +50,11 @@ class CrearListaRV : Fragment() {
         return inflater.inflate(R.layout.fragment_crear_lista_rv, container, false)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        menu.findItem(R.id.bm_borrar).isVisible = true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     fun llamadaMain(){
@@ -73,6 +78,8 @@ class CrearListaRV : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_borrar).isVisible = false
+
     }
 
     /**

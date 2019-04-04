@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(),
         val navController = findNavController(R.id.nav_host_fragment)
         navController.setGraph(R.navigation.nav_graph)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        var toolb = findViewById<Toolbar>(R.id.toolbar)
+        val toolb = findViewById<Toolbar>(R.id.toolbar)
         toolb.setupWithNavController(navController, appBarConfiguration)
         toolb.inflateMenu(R.menu.toolbar_menu)
         toolb.setOnMenuItemClickListener {onOptionsItemSelected(it)}
