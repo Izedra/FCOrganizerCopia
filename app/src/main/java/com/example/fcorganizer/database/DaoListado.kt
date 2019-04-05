@@ -4,19 +4,29 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.fcorganizer.pojos.Listado
+import com.example.fcorganizer.pojos.PersonajeP
 import com.example.fcorganizer.pojos.Resultado
 
 @Dao
 interface DaoListado {
 
-    // Saca todos los personajes de una lista, pasandole el id de esta
-    @Query("SELECT Personaje FROM Listado WHERE idListado = :id")
-    fun getListado(id: Int): List<Resultado>
+    /*val idListado: Int,
+    val Nombre: String,
+    val Servidor: String,
+    val Avatar: String*/
 
-    // Inserta todos los personajes seleccionados, precedidos del id de la lista que se crea
+    // Saca todos los personajes de una lista, pasandole el id de esta
+    @Query("SELECT * FROM Listado WHERE idListado = :id")
+    fun getListado(id: Int): List<Listado>
+
+    // Inserta un personaje
     @Insert
-    fun insertListado(listado: List<Pair<Int, Resultado>>)
+    fun insertListado(listado: Listado)
 
     @Delete
-    fun borrarListado(listado: List<Pair<Int, Resultado>>)
+    fun borrarListado(listacompleta: List<Listado>)
+
+    @Delete
+    fun borrarPersonaje(listado: Listado)
 }

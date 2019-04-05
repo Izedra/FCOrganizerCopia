@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import com.example.fcorganizer.conexiones.AsyncGet
 import com.example.fcorganizer.conexiones.ObtenerServidores
@@ -78,15 +79,18 @@ class FragmentCrearLista : Fragment(){
 
             val personaje = ac_tv_personaje.text.toString()
             val server = ac_tv_servers.text.toString().trim()
-
-            dialogo.show(fragmentManager!!, "")
-
-            val pref = this.activity!!.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-            pref.edit().putString("lista", "zyx").apply()
-
-            val toast = Toast.makeText(context, "Personaje no encontrado", Toast.LENGTH_SHORT)
-
-            AsyncGet(dialogo, pref, Navigation.findNavController(view!!), toast, personaje, server).execute()
+//
+//            dialogo.show(fragmentManager!!, "")
+//
+//            val pref = this.activity!!.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
+//            pref.edit().putString("lista", "zyx").apply()
+//
+//            val toast = Toast.makeText(context, "El personaje introducido no tiene amigos :V", Toast.LENGTH_SHORT)
+//
+//            val viewm = ViewModelProviders.of(this).get(AppDatas::class.java)
+//
+//            AsyncGet(dialogo, pref, Navigation.findNavController(view!!), toast, personaje, server, viewm).execute()
+            Navigation.findNavController(view!!).navigate(FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV(personaje, server))
         } else {
             Toast.makeText(context, "Introduzca un personaje y/o servidor", Toast.LENGTH_SHORT).show()
         }

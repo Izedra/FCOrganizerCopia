@@ -1,5 +1,6 @@
 package com.example.fcorganizer
 
+import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -8,7 +9,11 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.room.Room
+import com.example.fcorganizer.database.BaseDatos
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_crear_lista_rv.*
 
@@ -32,7 +37,10 @@ class CrearListaRV : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private val dialogo = ProgresoFragment()
     private val ID_FRAGMENTO: Int = 3
+    private var nombre: String = ""
+    private var server: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +48,8 @@ class CrearListaRV : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -47,6 +57,7 @@ class CrearListaRV : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_crear_lista_rv, container, false)
     }
 
@@ -55,6 +66,33 @@ class CrearListaRV : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        //cargarRV()
+
+        dialogo.show(fragmentManager!!, "")
+//        if (!dialogo.isVisible){
+//
+//        } else {
+        println(CrearListaRVArgs.fromBundle(arguments!!).charname + " ----------------------- " + CrearListaRVArgs.fromBundle(arguments!!).charserver)
+        dialogo.dismiss()
+        Toast.makeText(context, "El personaje introducido no conoce a nadie...", Toast.LENGTH_SHORT).show()
+        //Navigation.findNavController(view).navigateUp()
+
+        val db = BaseDatos(requireContext())
+
+    }
+
+    fun cargarRV(){
+        dialogo.show(fragmentManager!!, "")
+//        if (!dialogo.isVisible){
+//
+//        } else {
+        println(CrearListaRVArgs.fromBundle(arguments!!).charname + " ----------------------- " + CrearListaRVArgs.fromBundle(arguments!!).charserver)
+        dialogo.dismiss()
+        Toast.makeText(context, "El personaje introducido no conoce a nadie...", Toast.LENGTH_SHORT).show()
+        Navigation.findNavController(view!!).navigateUp()
+//        }
+//        dialogo.dismiss()
     }
 
     fun llamadaMain(){
@@ -71,7 +109,7 @@ class CrearListaRV : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

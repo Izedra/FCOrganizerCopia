@@ -5,8 +5,6 @@ import android.os.AsyncTask
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.NavController
-import com.example.fcorganizer.FragmentCrearListaDirections
-import com.example.fcorganizer.ListasCreadasDirections
 import com.example.fcorganizer.pojos.PersonajeC
 import com.example.fcorganizer.pojos.PersonajeP
 import com.example.fcorganizer.pojos.Resultado
@@ -21,16 +19,16 @@ class AsyncGet(
     private val toast: Toast,
     private val personaje: String,
     private val server: String
-): AsyncTask<Void, Void, String>() {
+    ): AsyncTask<Void, Void, ArrayList<Resultado>>() {
 
 
-    override fun onPostExecute(result: String) {
+    override fun onPostExecute(result: ArrayList<Resultado>) {
         super.onPostExecute(result)
 
-        if (result != "") {
-            prefs.edit().putString("lista", result).apply()
+        if (result.count() != 0) {
+            println(result.count().toString())
             dialogo.dismiss()
-            findNavController.navigate(FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV())
+            //indNavController.navigate(FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV())
         } else {
             toast.show()
         }
@@ -38,9 +36,9 @@ class AsyncGet(
         dialogo.dismiss()
     }
 
-    override fun doInBackground(vararg p0: Void?): String? {
+    override fun doInBackground(vararg p0: Void?): ArrayList<Resultado> {
 
-        val texto = URL("https://xivapi.com/character/search?name=${personaje.substringBefore(" ").trim()}+${personaje.substringAfter(" ").trim()}&$server=").readText()
+        val texto = URL("https://xivapi.com/character/search?name=${personaje.substringBefore(" ").trim()}+${personaje.substringAfter(" ").trim()}&server=$server").readText()
 
         val resultados = Gson().fromJson(texto, PersonajeC::class.java).Results
         try {
@@ -61,10 +59,9 @@ class AsyncGet(
                     lista.add(personaje.Friends[i])
                 }
             }
-
-            return Gson().toJson(lista)
+            return lista
         }catch (ex: IndexOutOfBoundsException){
-            return ""
+            return ArrayList()
         }
     }
 }

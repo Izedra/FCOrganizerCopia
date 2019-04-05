@@ -12,7 +12,6 @@
                 app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
                 app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"
         >
-            <argument android:defaultValue="-1" android:name="charid"/>
         </action>
     </fragment>
 
@@ -28,7 +27,6 @@
                 app:enterAnim="@anim/anim_slide_in_left" app:exitAnim="@anim/anim_slide_out_left"
                 app:popEnterAnim="@anim/anim_slide_in_right" app:popExitAnim="@anim/anim_slide_out_right"
         >
-            <argument android:defaultValue="-1" android:name="listid"/>
         </action>
     </fragment>
 
@@ -40,7 +38,8 @@
                 app:popUpToInclusive="true" app:popUpTo="@+id/listasCreadas"
                 app:popEnterAnim="@anim/anim_slide_in_left" app:popExitAnim="@anim/anim_slide_out_left"
                 app:enterAnim="@anim/anim_slide_in_right" app:exitAnim="@anim/anim_slide_out_right"/>
-        <argument android:name="charid" app:argType="integer" android:defaultValue="-1"/>
+        <argument android:name="charname" app:argType="string"/>
+        <argument android:name="charserver" app:argType="string"/>
     </fragment>
 
 
