@@ -24,7 +24,7 @@ interface DaoLista{
     // (objeto Resultado obtenido en la primera consulta para obtener la id del personaje que la crea y de el obtener
     // los miembros de su FC y su lista de amigos
     @Insert
-    fun insertLista(/*identificador: String, nombre: String, servidor: String, avatar: String*/ listas: Listas): Long
+    fun insertLista(listas: Listas): Long
 
     // Borra una lista pasandole su Id (autogenerada)
     @Delete

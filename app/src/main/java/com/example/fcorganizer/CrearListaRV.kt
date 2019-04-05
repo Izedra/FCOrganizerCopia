@@ -14,8 +14,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.room.Room
 import com.example.fcorganizer.database.BaseDatos
+import com.example.fcorganizer.pojos.Listas
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_crear_lista_rv.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,6 +44,7 @@ class CrearListaRV : Fragment() {
     private val ID_FRAGMENTO: Int = 3
     private var nombre: String = ""
     private var server: String = ""
+    private var idlista: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +83,16 @@ class CrearListaRV : Fragment() {
         //Navigation.findNavController(view).navigateUp()
 
         val db = BaseDatos(requireContext())
+
+
+        GlobalScope.launch {
+            db.daoLista().insertLista(Listas(0, "Lista1",nombre,server,"https://img2.finalfantasyxiv.com/f/db228dcf48f9f1f23890da6926a5d6cc_40d57ba713628f3f1ef5ef204b6d76d2fc0_96x96.jpg"))
+            var data = db.daoLista().getLista(1)
+
+            data.forEach {
+                println("----------------------------------------$it-------------------------")
+            }
+        }
 
     }
 
