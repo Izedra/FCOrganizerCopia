@@ -1,24 +1,25 @@
 package com.example.fcorganizer
 
-import android.app.Application
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProviders
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import androidx.room.Room
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fcorganizer.conexiones.ClaseRetrofit
+import com.example.fcorganizer.conexiones.RetrofitGenerator
 import com.example.fcorganizer.database.BaseDatos
-import com.example.fcorganizer.pojos.Listas
+import com.example.fcorganizer.pojos.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_crear_lista_rv.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,9 +43,9 @@ class CrearListaRV : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     private val dialogo = ProgresoFragment()
     private val ID_FRAGMENTO: Int = 3
-    private var nombre: String = ""
-    private var server: String = ""
     private var idlista: Long = -1
+    private var rv: RecyclerView? = null
+    private val cliente = RetrofitGenerator.crearObjeto(ClaseRetrofit::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +53,6 @@ class CrearListaRV : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
     }
 
     override fun onCreateView(
@@ -65,48 +64,113 @@ class CrearListaRV : Fragment() {
         return inflater.inflate(R.layout.fragment_crear_lista_rv, container, false)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        menu.findItem(R.id.bm_borrar).isVisible = true
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         //cargarRV()
 
         dialogo.show(fragmentManager!!, "")
+        rv = view.findViewById(R.id.rv_personajes)
+        rv!!.layoutManager = LinearLayoutManager(context)
+
+
 //        if (!dialogo.isVisible){
 //
 //        } else {
-        println(CrearListaRVArgs.fromBundle(arguments!!).charname + " ----------------------- " + CrearListaRVArgs.fromBundle(arguments!!).charserver)
-        dialogo.dismiss()
-        Toast.makeText(context, "El personaje introducido no conoce a nadie...", Toast.LENGTH_SHORT).show()
-        //Navigation.findNavController(view).navigateUp()
+//        println(CrearListaRVArgs.fromBundle(arguments!!).charname + " ----------------------- " + CrearListaRVArgs.fromBundle(arguments!!).charserver)
+//        dialogo.dismiss()
+//        Toast.makeText(context, "El personaje introducido no conoce a nadie...", Toast.LENGTH_SHORT).show()
+//        //Navigation.findNavController(view).navigateUp()
+//
+//        val db = BaseDatos(requireContext())
+//
+//
+//        GlobalScope.launch {
+//            db.daoLista().insertLista(Listas(0, "Lista1",nombre,server,"https://img2.finalfantasyxiv.com/f/db228dcf48f9f1f23890da6926a5d6cc_40d57ba713628f3f1ef5ef204b6d76d2fc0_96x96.jpg"))
+//            var data = db.daoLista().getListas()
+//
+//            data.forEach {
+//                println("----------------------------------------$it-------------------------")
+//            }
+//        }
 
-        val db = BaseDatos(requireContext())
-
-
-        GlobalScope.launch {
-            db.daoLista().insertLista(Listas(0, "Lista1",nombre,server,"https://img2.finalfantasyxiv.com/f/db228dcf48f9f1f23890da6926a5d6cc_40d57ba713628f3f1ef5ef204b6d76d2fc0_96x96.jpg"))
-            var data = db.daoLista().getLista(1)
-
-            data.forEach {
-                println("----------------------------------------$it-------------------------")
+        val callC = cliente.getCharId(CrearListaRVArgs.fromBundle(arguments!!).charname, CrearListaRVArgs.fromBundle(arguments!!).charserver)
+        callC.enqueue(object : Callback<PersonajeC>{
+            override fun onFailure(call: Call<PersonajeC>, t: Throwable) {
+                Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(requireView()).navigateUp()
             }
-        }
+
+            override fun onResponse(call: Call<PersonajeC>, response: Response<PersonajeC>) {
+                val respuesta = response.body()
+                rellenarRV(respuesta!!.Results!![0]!!.ID!!)
+            }
+        })
 
     }
 
-    fun cargarRV(){
-        dialogo.show(fragmentManager!!, "")
-//        if (!dialogo.isVisible){
-//
-//        } else {
-        println(CrearListaRVArgs.fromBundle(arguments!!).charname + " ----------------------- " + CrearListaRVArgs.fromBundle(arguments!!).charserver)
-        dialogo.dismiss()
-        Toast.makeText(context, "El personaje introducido no conoce a nadie...", Toast.LENGTH_SHORT).show()
-        Navigation.findNavController(view!!).navigateUp()
-//        }
+    fun rellenarRV(id: Int){
+
+        val callP = cliente.getCharacter(id)
+
+        callP.enqueue(object : Callback<PersonajeP>{
+
+            var lista = ArrayList<Resultado>()
+            override fun onFailure(call: Call<PersonajeP>, t: Throwable) {
+                Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<PersonajeP>, response: Response<PersonajeP>) {
+                val respuesta = response.body()
+                if (respuesta!!.FreeCompanyMembers != null) {
+                    respuesta.FreeCompanyMembers!!.forEach {
+                        lista.add(it)
+                    }
+                }
+
+                if (respuesta.Friends != null) {
+                    respuesta.Friends.forEach {
+                        lista.add(it)
+                    }
+                }
+
+                if (!lista.isEmpty()) {
+                    rv!!.adapter = AdaptadorCrearLista(lista, context!!)
+                    dialogo.dismiss()
+                } else {
+                    dialogo.dismiss()
+                    Toast.makeText(context, "El personaje seleccionado no tiene compañeros con los que crear la lista", Toast.LENGTH_LONG).show()
+                    Navigation.findNavController(requireView()).navigateUp()
+                }
+            }
+        })
+
+    }
+
+//    fun cargarRV(){
+//        dialogo.show(fragmentManager!!, "")
+////        if (!dialogo.isVisible){
+////
+////        } else {
+//        println(CrearListaRVArgs.fromBundle(arguments!!).charname + " ----------------------- " + CrearListaRVArgs.fromBundle(arguments!!).charserver)
 //        dialogo.dismiss()
+//        Toast.makeText(context, "El personaje introducido no conoce a nadie...", Toast.LENGTH_SHORT).show()
+//        Navigation.findNavController(view!!).navigateUp()
+////        }
+////        dialogo.dismiss()
+//    }
+
+    fun guardarLista(lista: Listas, listado: List<Listado>){
+        dialogo.show(fragmentManager!!, "")
+        val db = BaseDatos(requireContext())
+
+        GlobalScope.launch {
+            idlista = db.daoLista().insertLista(lista)
+            listado.forEach {
+                it.idListado = idlista.toInt()
+                db.daoListado().insertListado(it)
+            }
+        }
+
+        llamadaMain()
     }
 
     fun llamadaMain(){
@@ -122,6 +186,7 @@ class CrearListaRV : Fragment() {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
+            activity!!.findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_guardar).isVisible = true
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
@@ -130,7 +195,7 @@ class CrearListaRV : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
-        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_borrar).isVisible = false
+        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_guardar).isVisible = false
 
     }
 

@@ -20,6 +20,9 @@ interface DaoListado {
     @Query("SELECT * FROM Listado WHERE idListado = :id")
     fun getListado(id: Int): List<Listado>
 
+    @Query("SELECT COUNT(*) FROM Listado WHERE idListado = :id")
+    fun getListados(id: Int): Int
+
     // Inserta un personaje
     @Insert
     fun insertListado(listado: Listado)
@@ -28,5 +31,5 @@ interface DaoListado {
     fun borrarListado(listacompleta: List<Listado>)
 
     @Delete
-    fun borrarPersonaje(listado: Listado)
+    fun borrarPersonaje(idLista: Int)
 }

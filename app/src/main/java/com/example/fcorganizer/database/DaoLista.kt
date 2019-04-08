@@ -20,6 +20,9 @@ interface DaoLista{
     @Query("SELECT * FROM Listas WHERE idLista = :id")
     fun getLista(id: Int): List<Listas>
 
+    @Query("SELECT * FROM Listas")
+    fun getListas(): List<Listas>
+
     // Inserta una nueva lista sacando los datos Nombre, Servidor y Avatar del personaje que la crea por pantalla
     // (objeto Resultado obtenido en la primera consulta para obtener la id del personaje que la crea y de el obtener
     // los miembros de su FC y su lista de amigos

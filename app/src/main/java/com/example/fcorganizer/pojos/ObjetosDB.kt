@@ -1,6 +1,5 @@
 package com.example.fcorganizer.pojos
 
-import androidx.annotation.Nullable
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
@@ -15,7 +14,7 @@ import androidx.room.PrimaryKey
     )]
 )
 data class Listado(
-    val idListado: Int,
+    var idListado: Int,
     val nombre: String,
     val servidor: String,
     val avatar: String
@@ -31,14 +30,3 @@ data class Listas (
     val servidor: String,
     val avatar: String
 )
-
-
-/*data class Resultado (
-            val Avatar: URL?,
-            val FeastMatches: Int?,
-            val ID: Int?,
-            val Name: String?,
-            val Rank: Any?,
-            val RankIcon: URL?,
-            val Server: String?
-        )*/

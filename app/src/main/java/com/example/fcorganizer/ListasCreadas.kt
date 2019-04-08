@@ -50,14 +50,6 @@ class ListasCreadas : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        b_principal.setOnClickListener {
-            llamadaCrearLista()
-        }
-    }
-
-    fun llamadaCrearLista(){
-        Navigation.findNavController(view!!).navigate(ListasCreadasDirections.actionListasCreadasToFragmentCrearLista())
     }
 
     // TODO: Rename method, update argument and hook method into UI event

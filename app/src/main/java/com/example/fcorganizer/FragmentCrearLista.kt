@@ -10,9 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
-import com.example.fcorganizer.conexiones.AsyncGet
 import com.example.fcorganizer.conexiones.ObtenerServidores
 import kotlinx.android.synthetic.main.fragment_crear_lista.*
 
