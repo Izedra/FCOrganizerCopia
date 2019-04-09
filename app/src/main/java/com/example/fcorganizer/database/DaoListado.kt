@@ -31,5 +31,5 @@ interface DaoListado {
     fun borrarListado(listacompleta: List<Listado>)
 
     @Delete
-    fun borrarPersonaje(idLista: Int)
+    fun borrarPersonaje(personaje: Listado)
 }

@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="37dp" android:id="@+id/ac_tv_servers"
                 android:background="@android:color/white" android:hint="Servidor"
-                android:singleLine="true" android:text="Ragnarok"/>
+                android:singleLine="true"/>
         <Space
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>

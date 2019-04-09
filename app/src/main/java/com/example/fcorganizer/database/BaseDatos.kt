@@ -9,7 +9,6 @@ import com.example.fcorganizer.pojos.Listado
 import com.example.fcorganizer.pojos.Listas
 
 @Database(entities = [Listas::class, Listado::class], version = 1, exportSchema = false)
-//@TypeConverters(Convertidores::class)
 abstract class BaseDatos: RoomDatabase() {
     abstract fun daoLista(): DaoLista
     abstract fun daoListado(): DaoListado

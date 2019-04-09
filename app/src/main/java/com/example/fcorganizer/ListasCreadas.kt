@@ -8,7 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fcorganizer.adaptadores.AdaptadorListasCreadas
+import com.example.fcorganizer.database.BaseDatos
+import com.example.fcorganizer.pojos.Listas
 import kotlinx.android.synthetic.main.fragment_listas_creadas.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,7 +37,8 @@ class ListasCreadas : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    private val ID_FRAGMENTO: Int = 1
+    private var rv: RecyclerView? = null
+    private var listas: ArrayList<Listas> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +56,15 @@ class ListasCreadas : Fragment() {
         return inflater.inflate(R.layout.fragment_listas_creadas, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        rv = view.findViewById(R.id.rv_listas_creadas)
+        rv!!.layoutManager = LinearLayoutManager(context)
+
+        GlobalScope.launch {
+            listas = BaseDatos(context!!).daoLista().getListas() as ArrayList<Listas>
+        }
+
+        rv!!.adapter = AdaptadorListasCreadas(context!!, listas)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

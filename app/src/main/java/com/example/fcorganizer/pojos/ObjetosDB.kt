@@ -18,7 +18,6 @@ data class Listado(
     val nombre: String,
     val servidor: String,
     val avatar: String
-
 )
 
 @Entity

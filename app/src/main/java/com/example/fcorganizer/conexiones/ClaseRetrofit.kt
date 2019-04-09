@@ -19,4 +19,7 @@ interface ClaseRetrofit {
     fun getCharacter(
         @Path("id") id: Int
     ): Call<PersonajeP>
+
+    @GET("servers")
+    fun getServers(): Call<List<String>>
 }

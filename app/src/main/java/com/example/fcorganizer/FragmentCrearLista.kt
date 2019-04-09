@@ -11,8 +11,12 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.example.fcorganizer.conexiones.ObtenerServidores
+import com.example.fcorganizer.conexiones.ClaseRetrofit
+import com.example.fcorganizer.conexiones.RetrofitGenerator
 import kotlinx.android.synthetic.main.fragment_crear_lista.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -61,11 +65,25 @@ class FragmentCrearLista : Fragment(){
 
         activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = false
 
-        val servers = ObtenerServidores().getServidores()
-        val arrAdap: ArrayAdapter<String> = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, servers!!)
-        ac_tv_servers.threshold = 0
-        ac_tv_servers.dropDownAnchor
-        ac_tv_servers.setAdapter(arrAdap)
+        val cliente = RetrofitGenerator.crearObjeto(ClaseRetrofit::class.java)
+        val callS = cliente.getServers()
+        callS.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                val respuesta = response.body()
+                val arrAdap: ArrayAdapter<String> = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, respuesta!!)
+                ac_tv_servers.threshold = 0
+                ac_tv_servers.dropDownAnchor
+                ac_tv_servers.setAdapter(arrAdap)
+            }
+
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Navigation.findNavController(requireView()).navigateUp()
+            }
+        })
+
+
+
 
         b_crear_id.setOnClickListener { llamadaCrearRV() }
 
@@ -77,17 +95,6 @@ class FragmentCrearLista : Fragment(){
 
             val personaje = ac_tv_personaje.text.toString()
             val server = ac_tv_servers.text.toString().trim()
-//
-//            dialogo.show(fragmentManager!!, "")
-//
-//            val pref = this.activity!!.getSharedPreferences("Preferencias", Context.MODE_PRIVATE)
-//            pref.edit().putString("lista", "zyx").apply()
-//
-//            val toast = Toast.makeText(context, "El personaje introducido no tiene amigos :V", Toast.LENGTH_SHORT)
-//
-//            val viewm = ViewModelProviders.of(this).get(AppDatas::class.java)
-//
-//            AsyncGet(dialogo, pref, Navigation.findNavController(view!!), toast, personaje, server, viewm).execute()
             Navigation.findNavController(view!!).navigate(FragmentCrearListaDirections.actionFragmentCrearListaToCrearListaRV(personaje, server))
         } else {
             Toast.makeText(context, "Introduzca un personaje y/o servidor", Toast.LENGTH_SHORT).show()
