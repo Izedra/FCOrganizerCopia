@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fcorganizer.adaptadores.AdaptadorEditarLista
 import com.example.fcorganizer.conexiones.ClaseRetrofit
@@ -67,6 +69,10 @@ class EditarLista : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        dialogo.show(fragmentManager!!, "")
+        rv = view.findViewById(R.id.rv_editar_lista)
+        rv!!.layoutManager = LinearLayoutManager(context)
 
         val callC = cliente.getCharId(EditarListaArgs.fromBundle(arguments!!).nombre, EditarListaArgs.fromBundle(arguments!!).servidor)
         callC.enqueue(object : Callback<PersonajeC> {
@@ -137,11 +143,15 @@ class EditarLista : Fragment() {
 
                 // Comprueba si la lista creada está vacia...
                 if (!lista.isEmpty()) {// Si no lo está, crea la interfaz...
-                    var listaexistente: ArrayList<Listado>
-                    GlobalScope.launch {
+                    var listaexistente: ArrayList<Listado> = ArrayList()
+                    val t = Thread {
                         listaexistente = BaseDatos(context!!).daoListado().getListado(EditarListaArgs.fromBundle(arguments!!).idLista) as ArrayList<Listado>
-                        rv!!.adapter = AdaptadorEditarLista(lista, context!!, listaexistente)
+
                     }
+
+                    t.start()
+                    t.join()
+                    rv!!.adapter = AdaptadorEditarLista(lista, context!!, listaexistente)
 
                     dialogo.dismiss()
                 } else { // Si lo está, simplemente vuelve a la selección de personaje tras burlarse del personaje introducido
@@ -162,6 +172,7 @@ class EditarLista : Fragment() {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
+            activity!!.findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = false
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
@@ -170,6 +181,7 @@ class EditarLista : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = true
     }
 
     /**

@@ -59,10 +59,15 @@ class ListasCreadas : Fragment() {
         rv = view.findViewById(R.id.rv_listas_creadas)
         rv!!.layoutManager = LinearLayoutManager(context)
 
-        GlobalScope.launch {
+        val t= Thread {
             listas = BaseDatos(context!!).daoLista().getListas() as ArrayList<Listas>
-            rv!!.adapter = AdaptadorListasCreadas(context!!, listas)
+
         }
+
+        t.start()
+        t.join()
+
+        rv!!.adapter = AdaptadorListasCreadas(context!!, listas)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

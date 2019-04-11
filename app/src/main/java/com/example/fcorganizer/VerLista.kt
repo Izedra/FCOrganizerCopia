@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fcorganizer.adaptadores.AdaptadorVerListas
 import com.example.fcorganizer.database.BaseDatos
+import com.example.fcorganizer.pojos.Listado
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -57,14 +59,21 @@ class VerLista : Fragment() {
         rv = view.findViewById(R.id.rv_ver_lista)
         rv!!.layoutManager = LinearLayoutManager(context)
 
-        GlobalScope.launch {
-            try {
-                rv!!.adapter = AdaptadorVerListas(
-                    context!!,
-                    BaseDatos(context!!).daoListado().getListado(arguments!!.getInt("idLista"))
-                )
-            } catch (ex: KotlinNullPointerException){}
+        var idlist: ArrayList<Listado> = ArrayList()
+        val t = Thread{
+            idlist = BaseDatos(context!!).daoListado().getListado(arguments!!.getInt("idLista")) as ArrayList<Listado>
         }
+
+        t.start()
+        t.join()
+
+        try {
+            rv!!.adapter = AdaptadorVerListas(
+                context!!,
+                idlist
+                )
+        } catch (ex: KotlinNullPointerException){}
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -76,6 +85,7 @@ class VerLista : Fragment() {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
+            activity!!.findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = false
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
@@ -84,6 +94,7 @@ class VerLista : Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.fragmentCrearLista).isVisible = true
     }
 
     /**

@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity(),
     ListasCreadas.OnFragmentInteractionListener,
     FragmentCrearLista.OnFragmentInteractionListener,
     CrearListaRV.OnFragmentInteractionListener,
-    VerLista.OnFragmentInteractionListener {
+    VerLista.OnFragmentInteractionListener,
+    EditarLista.OnFragmentInteractionListener{
 
     override fun onFragmentInteraction(uri: Uri) {}
 

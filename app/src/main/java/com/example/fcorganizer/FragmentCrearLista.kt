@@ -40,8 +40,6 @@ class FragmentCrearLista : Fragment(){
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    private val dialogo = ProgresoFragment()
-    private val ID_FRAGMENTO: Int = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -35,7 +35,7 @@ class AdaptadorEditarLista(
     }
 
     override fun onBindViewHolder(holder: AdaptadorEditarLista.ViewHolder, position: Int) {
-        val item = items[position]
+        val item = sortitems[position]
 
         Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
         holder.nombrer.text = item.nombre
