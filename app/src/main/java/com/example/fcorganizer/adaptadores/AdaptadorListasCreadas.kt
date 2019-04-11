@@ -1,12 +1,16 @@
 package com.example.fcorganizer.adaptadores
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.fcorganizer.ListasCreadasDirections
 import com.example.fcorganizer.R
 import com.example.fcorganizer.database.BaseDatos
 import com.example.fcorganizer.pojos.Listas
@@ -14,7 +18,10 @@ import kotlinx.android.synthetic.main.card_listas_creadas.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class AdaptadorListasCreadas(private val context: Context, private val items: ArrayList<Listas>): RecyclerView.Adapter<AdaptadorListasCreadas.VHolder>() {
+class AdaptadorListasCreadas(
+    private val context: Context,
+    private val items: ArrayList<Listas>
+): RecyclerView.Adapter<AdaptadorListasCreadas.VHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VHolder {
         return VHolder(
@@ -33,13 +40,49 @@ class AdaptadorListasCreadas(private val context: Context, private val items: Ar
         holder.card.tv_lista_nombre.text = item.identificador
         holder.card.tv_nombre_hostchar.text = item.nombre
         holder.card.tv_server_lista.text = item.servidor
-        holder.card.tv_lista_id.text = item.idLista.toString()
 
         GlobalScope.launch {
-            holder.card.count_lista.text = BaseDatos(context).daoListado().getListados(item.idLista).toString()
+            holder.card.count_lista.text = "Tamaño: ${BaseDatos(context).daoListado().getListados(item.idLista)} personajes"
+        }
+
+        holder.card.b_verLista.setOnClickListener {
+            Navigation.findNavController(it).navigate(ListasCreadasDirections.actionListasCreadasToVerLista(item.idLista))
+        }
+
+        holder.card.b_borrarLista.setOnClickListener {
+            dialogBorrar(item, position)
+        }
+
+        holder.card.b_editarLista.setOnClickListener {
+            Navigation.findNavController(it).navigate(ListasCreadasDirections.actionListasCreadasToEditarLista(item.nombre, item.servidor, item.idLista))
         }
 
         /* CREAR ONCLICKLISTENER PARA LOS BOTONES*/
+    }
+
+    fun dialogBorrar(lista: Listas, position: Int){
+        val builder = AlertDialog.Builder(context)
+
+
+        builder.setTitle("¿Realmente desea borrar la lista?")
+
+        // set up the ok button
+        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
+            GlobalScope.launch {
+                BaseDatos(context).daoLista().deleteLista(lista)
+
+            }
+            items.removeAt(position)
+            notifyDataSetChanged()
+            dialog.cancel()
+        }
+
+        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
+            dialog.cancel()
+        }
+
+        builder.show()
+
     }
 
     class VHolder(itemview: View): RecyclerView.ViewHolder(itemview){

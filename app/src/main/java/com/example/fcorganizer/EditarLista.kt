@@ -3,20 +3,21 @@ package com.example.fcorganizer
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
-import android.widget.EditText
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fcorganizer.adaptadores.AdaptadorEditarLista
 import com.example.fcorganizer.conexiones.ClaseRetrofit
 import com.example.fcorganizer.conexiones.RetrofitGenerator
-import com.example.fcorganizer.adaptadores.AdaptadorCrearLista
 import com.example.fcorganizer.database.BaseDatos
-import com.example.fcorganizer.pojos.*
+import com.example.fcorganizer.pojos.Listado
+import com.example.fcorganizer.pojos.PersonajeC
+import com.example.fcorganizer.pojos.PersonajeP
+import com.example.fcorganizer.pojos.Resultado
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -33,23 +34,20 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [CrearListaRV.OnFragmentInteractionListener] interface
+ * [EditarLista.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [CrearListaRV.newInstance] factory method to
+ * Use the [EditarLista.newInstance] factory method to
  * create an instance of this fragment.
  *
  */
-class CrearListaRV : Fragment(){
-
+class EditarLista : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private val dialogo = ProgresoFragment()
-    private var idlista: Long = -1
-    private var rv: RecyclerView? = null
     private val cliente = RetrofitGenerator.crearObjeto(ClaseRetrofit::class.java)
-    private val listados: ArrayList<Listado> = ArrayList()
+    private var rv: RecyclerView? = null
     private var res: Resultado? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,19 +63,13 @@ class CrearListaRV : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_crear_lista_rv, container, false)
+        return inflater.inflate(R.layout.fragment_editar_lista, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // INICIALIZA EL RV, HACE LA BUSQUEDA DE LA ID DEL PERSONAJEP Y PROCEDE A RELLENAR EL RV EN EL METODO rellenar RV
 
-        dialogo.show(fragmentManager!!, "")
-        rv = view.findViewById(R.id.rv_personajes)
-        rv!!.layoutManager = LinearLayoutManager(context)
-
-        val callC = cliente.getCharId(CrearListaRVArgs.fromBundle(arguments!!).charname, CrearListaRVArgs.fromBundle(arguments!!).charserver)
-        callC.enqueue(object : Callback<PersonajeC>{
+        val callC = cliente.getCharId(EditarListaArgs.fromBundle(arguments!!).nombre, EditarListaArgs.fromBundle(arguments!!).servidor)
+        callC.enqueue(object : Callback<PersonajeC> {
             override fun onFailure(call: Call<PersonajeC>, t: Throwable) {
                 dialogo.dismiss()
                 Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
@@ -97,26 +89,25 @@ class CrearListaRV : Fragment(){
         })
     }
 
-    // Recibe un id mediante el cuál hará una consulta a la API y devolverá la lista de personajes asociados al id
     fun rellenarRV(id: Int){
 
         val callP = cliente.getCharacter(id)
 
         callP.enqueue(object : Callback<PersonajeP>{
 
-            var lista = ArrayList<Resultado>()
+            var lista = ArrayList<Listado>()
             override fun onFailure(call: Call<PersonajeP>, t: Throwable) {
                 dialogo.dismiss()
                 Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
                 Navigation.findNavController(view!!).navigateUp()
             }
 
-             override fun onResponse(call: Call<PersonajeP>, response: Response<PersonajeP>) {
+            override fun onResponse(call: Call<PersonajeP>, response: Response<PersonajeP>) {
                 val respuesta = response.body()
                 if (respuesta!!.FreeCompanyMembers != null) {
                     respuesta.FreeCompanyMembers!!.forEach {
                         if (it.ID != id) {
-                            lista.add(it)
+                            lista.add(Listado(arguments!!.getInt("idLista"), it.Name!!, it.Server!!, it.Avatar.toString()))
                         }
                     }
                 }
@@ -129,7 +120,7 @@ class CrearListaRV : Fragment(){
                         var addit = true
                         for (i in 1..lista.size){
                             try {
-                                if (lista[i].Name + lista[i].Server != cadena) {
+                                if (lista[i].nombre + lista[i].servidor != cadena) {
                                     addit = true
                                 } else {
                                     addit = false
@@ -139,14 +130,19 @@ class CrearListaRV : Fragment(){
                         }
 
                         if (addit) {
-                            lista.add(it)
+                            lista.add(Listado(arguments!!.getInt("idLista"), it.Name!!, it.Server!!, it.Avatar.toString()))
                         }
                     }
                 }
 
                 // Comprueba si la lista creada está vacia...
-                if (!lista.isEmpty()) {
-                    rv!!.adapter = AdaptadorCrearLista(lista, context!!, id, listados) // Si no lo está, crea la interfaz...
+                if (!lista.isEmpty()) {// Si no lo está, crea la interfaz...
+                    var listaexistente: ArrayList<Listado>
+                    GlobalScope.launch {
+                        listaexistente = BaseDatos(context!!).daoListado().getListado(EditarListaArgs.fromBundle(arguments!!).idLista) as ArrayList<Listado>
+                        rv!!.adapter = AdaptadorEditarLista(lista, context!!, listaexistente)
+                    }
+
                     dialogo.dismiss()
                 } else { // Si lo está, simplemente vuelve a la selección de personaje tras burlarse del personaje introducido
                     dialogo.dismiss()
@@ -155,65 +151,6 @@ class CrearListaRV : Fragment(){
                 }
             }
         })
-    }
-
-    // Lanza un dialogo en el que introducir un nombre para la lista y llama a la función [guardarLista]
-    fun showDialogoNombre(){
-
-        val builder = AlertDialog.Builder(context!!)
-        builder.setTitle("Nombre de lista")
-
-        // https://stackoverflow.com/questions/10695103/creating-custom-alertdialog-what-is-the-root-view
-        // Seems ok to inflate view with null rootView
-        val view = layoutInflater.inflate(R.layout.dialogo_nombre_lista, null)
-
-        val et = view.findViewById(R.id.et_nombre_lista) as EditText
-
-        builder.setView(view)
-
-        // Asigna funcion a los botones 'Aceptar' y 'Cancelar'
-        builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
-            val newCategory = et.text
-            var isValid = true
-            if (newCategory.isBlank()) {
-                Toast.makeText(context, "Introduzca un nombre", Toast.LENGTH_SHORT).show()
-                isValid = false
-            }
-
-            if (isValid) {
-                guardarLista(Listas(0, et.text.toString(), res!!.Name!!, res!!.Server!!, res!!.Avatar.toString()), listados)
-                dialog.dismiss()
-                llamadaMain()
-            }
-        }
-
-        builder.setNegativeButton(android.R.string.cancel) { dialog, p1 ->
-            dialog.cancel()
-        }
-
-        builder.show()
-
-    }
-
-    // Guarda la lista creada en la base de datos
-    fun guardarLista(lista: Listas, listado: List<Listado>){
-        dialogo.show(fragmentManager!!, "")
-        val db = BaseDatos(context!!)
-
-        GlobalScope.launch {
-            idlista = db.daoLista().insertLista(lista)
-            listado.forEach {
-                it.idListado = idlista.toInt()
-                db.daoListado().insertListado(it)
-            }
-        }
-
-        dialogo.dismiss()
-    }
-
-    // Navega al fragment principal
-    fun llamadaMain(){
-        Navigation.findNavController(view!!).navigate(CrearListaRVDirections.actionCrearListaRVToListasCreadas())
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -225,12 +162,6 @@ class CrearListaRV : Fragment(){
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
-            val botonGuardar = activity!!.findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_guardar)
-            botonGuardar.isVisible = true
-            botonGuardar.setOnMenuItemClickListener {
-                showDialogoNombre()
-                true
-            }
         } else {
             throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
@@ -239,11 +170,6 @@ class CrearListaRV : Fragment(){
     override fun onDetach() {
         super.onDetach()
         listener = null
-        listados.forEach{
-            println(it.nombre)
-        }
-        activity!!.findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_guardar).isVisible = false
-
     }
 
     /**
@@ -269,12 +195,12 @@ class CrearListaRV : Fragment(){
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment CrearListaRV.
+         * @return A new instance of fragment EditarLista.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            CrearListaRV().apply {
+            EditarLista().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

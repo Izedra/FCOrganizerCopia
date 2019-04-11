@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fcorganizer.adaptadores.AdaptadorListasCreadas
 import com.example.fcorganizer.database.BaseDatos
 import com.example.fcorganizer.pojos.Listas
-import kotlinx.android.synthetic.main.fragment_listas_creadas.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -62,9 +61,8 @@ class ListasCreadas : Fragment() {
 
         GlobalScope.launch {
             listas = BaseDatos(context!!).daoLista().getListas() as ArrayList<Listas>
+            rv!!.adapter = AdaptadorListasCreadas(context!!, listas)
         }
-
-        rv!!.adapter = AdaptadorListasCreadas(context!!, listas)
     }
 
     // TODO: Rename method, update argument and hook method into UI event

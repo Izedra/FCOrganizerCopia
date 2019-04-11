@@ -7,6 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fcorganizer.adaptadores.AdaptadorVerListas
+import com.example.fcorganizer.database.BaseDatos
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,6 +51,22 @@ class VerLista : Fragment() {
         return inflater.inflate(R.layout.fragment_ver_lista, container, false)
     }
 
+    private var rv: RecyclerView? = null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        rv = view.findViewById(R.id.rv_ver_lista)
+        rv!!.layoutManager = LinearLayoutManager(context)
+
+        GlobalScope.launch {
+            try {
+                rv!!.adapter = AdaptadorVerListas(
+                    context!!,
+                    BaseDatos(context!!).daoListado().getListado(arguments!!.getInt("idLista"))
+                )
+            } catch (ex: KotlinNullPointerException){}
+        }
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
@@ -55,7 +77,7 @@ class VerLista : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 

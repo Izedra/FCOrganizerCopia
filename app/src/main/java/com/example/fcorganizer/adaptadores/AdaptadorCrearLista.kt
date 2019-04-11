@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.card_crear_lista.view.*
 // RV para crear listas, señala a card_crear_lista
 class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: Context, private val id: Int, private val listados: ArrayList<Listado>): RecyclerView.Adapter<AdaptadorCrearLista.PersonajeVH>() {
     var checkedChars: SparseBooleanArray = SparseBooleanArray()
+    private val sortitems = items.sortedWith(compareBy{it.Name})
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonajeVH {
         return PersonajeVH(
@@ -32,7 +33,7 @@ class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: 
     }
 
     override fun onBindViewHolder(holder: PersonajeVH, position: Int) {
-        val item = items[position]
+        val item = sortitems[position]
 
         Glide.with(context).load(item.Avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
         holder.card.tv_charname.text = item.Name
@@ -40,9 +41,9 @@ class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: 
 
         holder.card.char_check.isChecked = checkedChars.get(position, false)
 
-        holder.card.char_check.setOnClickListener{
-            val listado: Listado = Listado(id, item.Name!!, item.Server!!, item.Avatar.toString())
-            if (!checkedChars.get(position, false)){
+        holder.card.char_check.setOnClickListener {
+            val listado = Listado(id, item.Name!!, item.Server!!, item.Avatar.toString())
+            if (!checkedChars.get(position, false)) {
                 holder.card.char_check.isChecked = true
                 checkedChars.put(position, true)
                 listados.add(listado)

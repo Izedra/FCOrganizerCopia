@@ -70,10 +70,13 @@ class FragmentCrearLista : Fragment(){
         callS.enqueue(object : Callback<List<String>> {
             override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 val respuesta = response.body()
-                val arrAdap: ArrayAdapter<String> = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, respuesta!!)
-                ac_tv_servers.threshold = 0
-                ac_tv_servers.dropDownAnchor
-                ac_tv_servers.setAdapter(arrAdap)
+                try{
+                    val arrAdap: ArrayAdapter<String> = ArrayAdapter(context!!, android.R.layout.simple_dropdown_item_1line, respuesta!!)
+                    ac_tv_servers.threshold = 0
+                    ac_tv_servers.dropDownAnchor
+                    ac_tv_servers.setAdapter(arrAdap)
+                }catch (ex: IllegalStateException){}
+                catch (ex: KotlinNullPointerException){}
             }
 
             override fun onFailure(call: Call<List<String>>, t: Throwable) {

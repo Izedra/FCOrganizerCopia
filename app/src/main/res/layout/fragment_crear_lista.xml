@@ -20,7 +20,8 @@
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/ac_tv_personaje" android:background="@android:color/white"
-                android:hint="Nombre del personaje" android:text="Izedra Argent"/>
+                android:hint="Nombre del personaje" android:maxLength="21"
+        />
         <Space
                 android:layout_width="match_parent"
                 android:layout_height="35dp"/>
