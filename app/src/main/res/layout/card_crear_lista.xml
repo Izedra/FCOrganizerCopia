@@ -5,8 +5,8 @@
               android:layout_height="wrap_content" android:orientation="vertical">
     <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:padding="10dp" android:layout_margin="10dp"
-            app:cardBackgroundColor="@color/card_background" app:cardCornerRadius="10dp">
+            android:layout_height="wrap_content" android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/card_background" app:cardCornerRadius="10dp" android:padding="10dp">
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -16,11 +16,11 @@
                     android:layout_height="wrap_content" app:srcCompat="@mipmap/ic_launcher_round"
                     android:id="@+id/char_avatar" android:layout_weight="1" android:contentDescription="avatar"
                     android:scaleType="centerCrop"
-                    android:padding="8dp" android:layout_gravity="center"/>
+                    android:layout_gravity="center" android:padding="15dp"/>
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:layout_weight="1">
+                    android:layout_height="wrap_content" android:layout_weight="1">
                 <TextView
                         android:text="adasdasdadasdasdasas"
                         android:id="@+id/tv_charname"

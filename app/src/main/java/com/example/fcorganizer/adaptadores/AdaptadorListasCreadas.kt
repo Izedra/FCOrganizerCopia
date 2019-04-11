@@ -41,9 +41,15 @@ class AdaptadorListasCreadas(
         holder.card.tv_nombre_hostchar.text = item.nombre
         holder.card.tv_server_lista.text = item.servidor
 
-        GlobalScope.launch {
-            holder.card.count_lista.text = "Tamaño: ${BaseDatos(context).daoListado().getListados(item.idLista)} personajes"
+        var count = 0
+        val t = Thread{
+            count = BaseDatos(context).daoListado().getListados(item.idLista)
         }
+        t.start()
+        t.join()
+
+        holder.card.count_lista.text = "Tamaño: $count personajes"
+
 
         holder.card.b_verLista.setOnClickListener {
             Navigation.findNavController(it).navigate(ListasCreadasDirections.actionListasCreadasToVerLista(item.idLista))

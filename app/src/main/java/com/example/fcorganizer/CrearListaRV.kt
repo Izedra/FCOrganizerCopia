@@ -3,6 +3,8 @@ package com.example.fcorganizer
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.text.InputFilter
+import android.text.Spanned
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast

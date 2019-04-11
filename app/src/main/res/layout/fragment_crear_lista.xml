@@ -21,7 +21,7 @@
                 android:ems="10"
                 android:id="@+id/ac_tv_personaje" android:background="@android:color/white"
                 android:hint="Nombre del personaje" android:maxLength="21"
-        />
+                android:textColorHint="@android:color/darker_gray" android:textColor="@android:color/black"/>
         <Space
                 android:layout_width="match_parent"
                 android:layout_height="35dp"/>
@@ -29,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="37dp" android:id="@+id/ac_tv_servers"
                 android:background="@android:color/white" android:hint="Servidor"
-                android:singleLine="true"/>
+                android:singleLine="true" android:textColor="@android:color/black"
+                android:textColorHint="@android:color/darker_gray"/>
         <Space
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>
