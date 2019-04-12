@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -50,10 +51,41 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
+    fun mostrarInfo(){
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Funcionamiento")
+
+        builder.setMessage("\n" +
+                "\n" +
+                " * Introduciendo un personaje válido, permite acceder al círculo de contactos de este mediante XIVApi\n" +
+                "\n" +
+                " * Una vez obtenido, se creará una lista de la cuál se pueden seleccionar tantos personajes como se quiera\n" +
+                "\n" +
+                " * Cuando se haya decidido el tamaño de la lista, podemos guardarla pulsando el botón pertinente\n" +
+                "\n" +
+                " * En el diálogo que aparecerá, se introducirá un nombre identificativo para la lista (puede repetirse)\n" +
+                "\n" +
+                " * Una vez creada la lista, desde la pantalla principal, podremos tanto acceder a ella para su visualización completa, como borrarla o editarla\n" +
+                "\n" +
+                " * Al intentar borrar una lista, un diálogo nos pedirá confirmación previa (esta acción no es reversible)\n" +
+                "\n" +
+                " * En el momento de editar una lista, una vez accedamos a la interfaz pertinente, simplemente tendremos que dejar seleccionados los personajes que queramos que se queden en la lista, de esta manera, podremos crear listas vacias para un propósito concreto y, más tarde, ampliar y/o reducir su tamaño como lo estimemos oportuno\n")
+
+        builder.setPositiveButton("OK"){dialog, _ ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
     // Controla los botones del menu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val navController = nav_host_fragment.findNavController()
-        return item!!.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
+        when (item!!.itemId){
+             R.id.bm_info -> mostrarInfo()
+        }
+        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }
 
     // Manda la aplicación al fondo o retrocede de Fragment al pulsar el botón de retroceso de android
