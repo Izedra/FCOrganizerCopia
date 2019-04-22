@@ -107,6 +107,8 @@ class CrearListaRV : Fragment(){
         callP.enqueue(object : Callback<PersonajeP>{
 
             var lista = ArrayList<Resultado>()
+
+            // Que hacer si la conexión da algún tipo de error
             override fun onFailure(call: Call<PersonajeP>, t: Throwable) {
                 dialogo.dismiss()
                 Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
@@ -123,7 +125,7 @@ class CrearListaRV : Fragment(){
                     }
                 }
 
-                // Por cada it de la lista de amigos, comprueba que no se haya añadido ya un elemento a la lista
+                // Por cada iteración de la lista de amigos, comprueba que no se haya añadido ya un elemento a la lista
                 // con el mismo nombre y servidor (el mismo personaje) y si no es asi lo añade
                 if (respuesta.Friends != null) {
                     respuesta.Friends.forEach {
@@ -165,8 +167,6 @@ class CrearListaRV : Fragment(){
         val builder = AlertDialog.Builder(context!!)
         builder.setTitle("Nombre de lista")
 
-        // https://stackoverflow.com/questions/10695103/creating-custom-alertdialog-what-is-the-root-view
-        // Seems ok to inflate view with null rootView
         val view = layoutInflater.inflate(R.layout.dialogo_nombre_lista, null)
 
         val et = view.findViewById(R.id.et_nombre_lista) as EditText

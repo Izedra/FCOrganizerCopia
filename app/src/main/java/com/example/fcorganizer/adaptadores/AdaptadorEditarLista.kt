@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.fcorganizer.R
 import com.example.fcorganizer.database.BaseDatos
@@ -37,7 +38,7 @@ class AdaptadorEditarLista(
     override fun onBindViewHolder(holder: AdaptadorEditarLista.ViewHolder, position: Int) {
         val item = sortitems[position]
 
-        Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
+        Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
         holder.nombrer.text = item.nombre
         holder.servidorr.text = item.servidor
 

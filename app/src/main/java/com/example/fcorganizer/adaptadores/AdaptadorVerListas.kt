@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.fcorganizer.R
 import com.example.fcorganizer.pojos.Listado
@@ -35,7 +36,7 @@ class AdaptadorVerListas(private val context: Context, private val listado: List
 
         val card = holder.card
 
-        Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
 
         card.tv_charname.text = item.nombre
         card.tv_charserver.text = item.servidor

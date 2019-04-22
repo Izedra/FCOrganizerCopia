@@ -59,6 +59,7 @@ class ListasCreadas : Fragment() {
         rv = view.findViewById(R.id.rv_listas_creadas)
         rv!!.layoutManager = LinearLayoutManager(context)
 
+        // Llamada a la base de datos para obtener las listas guardadas
         val t= Thread {
             listas = BaseDatos(context!!).daoLista().getListas() as ArrayList<Listas>
 

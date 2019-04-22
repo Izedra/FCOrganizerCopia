@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.fcorganizer.R
 import com.example.fcorganizer.pojos.Listado
@@ -35,7 +36,7 @@ class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: 
     override fun onBindViewHolder(holder: PersonajeVH, position: Int) {
         val item = sortitems[position]
 
-        Glide.with(context).load(item.Avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        Glide.with(context).load(item.Avatar).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
         holder.card.tv_charname.text = item.Name
         holder.card.tv_charserver.text = item.Server
 

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.fcorganizer.ListasCreadasDirections
 import com.example.fcorganizer.R
@@ -36,7 +37,7 @@ class AdaptadorListasCreadas(
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val item = items[position]
 
-        Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.imagen_lista)
+        Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.imagen_lista)
         holder.card.tv_lista_nombre.text = item.identificador
         holder.card.tv_nombre_hostchar.text = item.nombre
         holder.card.tv_server_lista.text = item.servidor
