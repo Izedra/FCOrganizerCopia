@@ -1,6 +1,7 @@
 package com.example.fcorganizer.adaptadores
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.example.fcorganizer.R
 import com.example.fcorganizer.pojos.Listado
 import com.example.fcorganizer.pojos.Resultado
 import kotlinx.android.synthetic.main.card_crear_lista.view.*
+import kotlinx.coroutines.newSingleThreadContext
 
 // RV para crear listas, señala a card_crear_lista
 class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: Context, private val id: Int, private val listados: ArrayList<Listado>): RecyclerView.Adapter<AdaptadorCrearLista.PersonajeVH>() {
@@ -36,7 +38,15 @@ class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: 
     override fun onBindViewHolder(holder: PersonajeVH, position: Int) {
         val item = sortitems[position]
 
-        Glide.with(context).load(item.Avatar.toString()).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netinfo = cm.activeNetworkInfo
+        if (netinfo != null && netinfo.isConnected){
+            Glide.with(context).load(item.Avatar.toString()).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        } else {
+            Glide.with(context).load(item.Avatar.toString()).apply(RequestOptions.circleCropTransform()).override(100)
+                .into(holder.card.char_avatar)
+        }
+
         holder.card.tv_charname.text = item.Name
         holder.card.tv_charserver.text = item.Server
 

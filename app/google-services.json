@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "589859130168",
+    "firebase_url": "https://xiv-lists.firebaseio.com",
+    "project_id": "xiv-lists",
+    "storage_bucket": "xiv-lists.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589859130168:android:753b6577943caa98",
+        "android_client_info": {
+          "package_name": "com.example.fcorganizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "589859130168-ka5qdhibgdulf4rn6r1ltu8v6j0m4r85.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fcorganizer",
+            "certificate_hash": "7aa5e420d363c4374038207c4ba861db2cfd0425"
+          }
+        },
+        {
+          "client_id": "589859130168-vm3k4gef8b5sm83u6edbgrlok7oklv5j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFYGanSlRp7YHlZZIzbbWSc1FGKdj-4io"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "589859130168-vm3k4gef8b5sm83u6edbgrlok7oklv5j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,14 +18,24 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
+import com.example.fcorganizer.pojos.Listas
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.SQLException
 
 class MainActivity : AppCompatActivity(),
     ListasCreadas.OnFragmentInteractionListener,
     FragmentCrearLista.OnFragmentInteractionListener,
     CrearListaRV.OnFragmentInteractionListener,
     VerLista.OnFragmentInteractionListener,
-    EditarLista.OnFragmentInteractionListener{
+    EditarLista.OnFragmentInteractionListener, ValueEventListener{
+
+    private var conn: Connection? =  null
 
     override fun onFragmentInteraction(uri: Uri) {}
 
@@ -43,6 +53,20 @@ class MainActivity : AppCompatActivity(),
         // Asigna un menu personalizado a la toolbar
         toolb.inflateMenu(R.menu.toolbar_menu)
         toolb.setOnMenuItemClickListener {onOptionsItemSelected(it)}
+    }
+
+    fun writeFirebase(){
+        val rootref = FirebaseDatabase.getInstance().reference
+        val listaref = rootref.child("lista")
+//        dbref.setValue(Listas(56,"identificador1","nombre1", "servidor1","avatar1"))
+    }
+
+    override fun onCancelled(p0: DatabaseError) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onDataChange(p0: DataSnapshot) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     // Infla el menu

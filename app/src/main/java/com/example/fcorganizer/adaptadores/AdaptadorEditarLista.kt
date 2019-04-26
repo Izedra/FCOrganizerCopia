@@ -1,6 +1,7 @@
 package com.example.fcorganizer.adaptadores
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,15 @@ class AdaptadorEditarLista(
     override fun onBindViewHolder(holder: AdaptadorEditarLista.ViewHolder, position: Int) {
         val item = sortitems[position]
 
-        Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netinfo = cm.activeNetworkInfo
+        if (netinfo != null && netinfo.isConnected) {
+            Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                .apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
+        } else {
+            Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
+        }
+
         holder.nombrer.text = item.nombre
         holder.servidorr.text = item.servidor
 

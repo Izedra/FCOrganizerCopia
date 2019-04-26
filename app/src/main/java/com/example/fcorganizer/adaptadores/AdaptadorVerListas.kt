@@ -1,6 +1,7 @@
 package com.example.fcorganizer.adaptadores
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -36,7 +37,14 @@ class AdaptadorVerListas(private val context: Context, private val listado: List
 
         val card = holder.card
 
-        Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netinfo = cm.activeNetworkInfo
+        if (netinfo != null && netinfo.isConnected) {
+            Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                .apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        } else {
+            Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
+        }
 
         card.tv_charname.text = item.nombre
         card.tv_charserver.text = item.servidor
