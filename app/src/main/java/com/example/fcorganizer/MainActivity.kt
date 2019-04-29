@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -19,10 +20,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.fcorganizer.pojos.Listas
+import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.provider.FirebaseInitProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import java.sql.Connection
 import java.sql.DriverManager
@@ -53,20 +56,24 @@ class MainActivity : AppCompatActivity(),
         // Asigna un menu personalizado a la toolbar
         toolb.inflateMenu(R.menu.toolbar_menu)
         toolb.setOnMenuItemClickListener {onOptionsItemSelected(it)}
+
+        FirebaseApp.initializeApp(this)
+        writeFirebase()
     }
 
     fun writeFirebase(){
+
         val rootref = FirebaseDatabase.getInstance().reference
-        val listaref = rootref.child("lista")
-//        dbref.setValue(Listas(56,"identificador1","nombre1", "servidor1","avatar1"))
+        val listaref = rootref.child("prueba")
+        listaref.setValue(Listas(56,"identificador1","nombre1", "servidor1","avatar1"))
     }
 
     override fun onCancelled(p0: DatabaseError) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d("RESULTADO: ", "--------false---------")
     }
 
     override fun onDataChange(p0: DataSnapshot) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Log.d("RESULTADO: ", "--------true----------")
     }
 
     // Infla el menu
