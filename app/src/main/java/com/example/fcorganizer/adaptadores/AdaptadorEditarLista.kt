@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.fcorganizer.R
 import com.example.fcorganizer.database.BaseDatos
 import com.example.fcorganizer.pojos.Listado
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.card_crear_lista.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -64,11 +65,13 @@ class AdaptadorEditarLista(
 
                 GlobalScope.launch {
                     BaseDatos(context).daoListado().insertListado(item)
+                    FirebaseDatabase.getInstance().reference.child(item.idListado.toString()).child(item.nombre+item.servidor).setValue(item)
                 }
             } else {
                 checkedChars.delete(position)
                 GlobalScope.launch {
                     BaseDatos(context).daoListado().borrarPersonaje(item)
+                    FirebaseDatabase.getInstance().reference.child(item.idListado.toString()).child(item.nombre+item.servidor).removeValue()
                 }
             }
         }

@@ -19,6 +19,7 @@ import com.example.fcorganizer.conexiones.RetrofitGenerator
 import com.example.fcorganizer.adaptadores.AdaptadorCrearLista
 import com.example.fcorganizer.database.BaseDatos
 import com.example.fcorganizer.pojos.*
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -204,14 +205,28 @@ class CrearListaRV : Fragment(){
 
         GlobalScope.launch {
             idlista = db.daoLista().insertLista(lista)
+
+            val listasref = FirebaseDatabase.getInstance().reference.child(idlista.toString())
+            lista.idLista = idlista.toInt()
+            listasref.setValue(lista)
             listado.forEach {
                 it.idListado = idlista.toInt()
                 db.daoListado().insertListado(it)
+                listasref.child(it.nombre+it.servidor).setValue(it)
+
             }
         }
 
         dialogo.dismiss()
     }
+
+    /*fun writeFirebase(){
+
+        val rootref = FirebaseDatabase.getInstance().reference
+        val listaref = rootref.child("prueba")
+        val fireref = listaref.child("lista1")
+        fireref.setValue(Listas(56,"identificador2","nombre2", "servidor1","avatar1"))
+    }*/
 
     // Navega al fragment principal
     fun llamadaMain(){

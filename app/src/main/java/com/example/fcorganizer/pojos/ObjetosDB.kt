@@ -23,7 +23,7 @@ data class Listado(
 @Entity
 data class Listas (
     // Los atugenerados simplemente se pasa con un 0 al insertar
-    @PrimaryKey(autoGenerate = true) val idLista: Int,
+    @PrimaryKey(autoGenerate = true) var idLista: Int,
     val identificador: String,
     val nombre: String,
     val servidor: String,

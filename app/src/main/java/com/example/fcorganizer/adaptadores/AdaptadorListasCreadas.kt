@@ -16,6 +16,7 @@ import com.example.fcorganizer.ListasCreadasDirections
 import com.example.fcorganizer.R
 import com.example.fcorganizer.database.BaseDatos
 import com.example.fcorganizer.pojos.Listas
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.card_listas_creadas.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -86,7 +87,7 @@ class AdaptadorListasCreadas(
         builder.setPositiveButton(android.R.string.ok) { dialog, p1 ->
             GlobalScope.launch {
                 BaseDatos(context).daoLista().deleteLista(lista)
-
+                FirebaseDatabase.getInstance().reference.child(lista.idLista.toString()).removeValue()
             }
             items.removeAt(position)
             notifyDataSetChanged()

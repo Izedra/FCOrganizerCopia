@@ -20,7 +20,11 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import com.example.fcorganizer.pojos.Listas
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -36,9 +40,10 @@ class MainActivity : AppCompatActivity(),
     FragmentCrearLista.OnFragmentInteractionListener,
     CrearListaRV.OnFragmentInteractionListener,
     VerLista.OnFragmentInteractionListener,
-    EditarLista.OnFragmentInteractionListener, ValueEventListener{
+    EditarLista.OnFragmentInteractionListener{
 
     private var conn: Connection? =  null
+    private var mAuth: FirebaseAuth? = null
 
     override fun onFragmentInteraction(uri: Uri) {}
 
@@ -53,27 +58,34 @@ class MainActivity : AppCompatActivity(),
         val toolb = findViewById<Toolbar>(R.id.toolbar)
         toolb.setupWithNavController(navController, appBarConfiguration)
 
+        mAuth = FirebaseAuth.getInstance()
+
         // Asigna un menu personalizado a la toolbar
         toolb.inflateMenu(R.menu.toolbar_menu)
         toolb.setOnMenuItemClickListener {onOptionsItemSelected(it)}
-
-        FirebaseApp.initializeApp(this)
-        writeFirebase()
     }
 
-    fun writeFirebase(){
-
-        val rootref = FirebaseDatabase.getInstance().reference
-        val listaref = rootref.child("prueba")
-        listaref.setValue(Listas(56,"identificador1","nombre1", "servidor1","avatar1"))
+    override fun onStart() {
+        super.onStart()
+        if (getCurrentUser() != null) {
+            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_logout).isVisible = true
+        } else {
+            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_login).isVisible = true
+        }
     }
 
-    override fun onCancelled(p0: DatabaseError) {
-        Log.d("RESULTADO: ", "--------false---------")
+    fun signUp(email: String, pass: String){
+        mAuth!!.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
+            if (it.isSuccessful){
+                // Registro OK
+            } else {
+                // Fallo al registrar
+            }
+        }
     }
 
-    override fun onDataChange(p0: DataSnapshot) {
-        Log.d("RESULTADO: ", "--------true----------")
+    fun getCurrentUser(): String? {
+        return mAuth!!.currentUser.toString()
     }
 
     // Infla el menu

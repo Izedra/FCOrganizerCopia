@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:title="logout" app:showAsAction="always" android:icon="@drawable/googleg_disabled_color_18"
+          android:id="@+id/bm_logout" android:visible="false"/>
+    <item app:showAsAction="always" android:id="@+id/bm_login"
+          android:icon="@drawable/common_google_signin_btn_icon_light_normal" android:title="login"
+          android:visible="false"/>
     <item android:title="Info" android:id="@+id/bm_info" android:visible="true"
           android:icon="@android:drawable/ic_menu_info_details" app:showAsAction="always"/>
     <item app:showAsAction="ifRoom" android:icon="@android:drawable/ic_menu_add" android:title="Crear"
