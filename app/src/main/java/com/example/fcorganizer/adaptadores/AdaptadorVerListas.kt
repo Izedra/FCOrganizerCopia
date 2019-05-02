@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.fcorganizer.MainActivity
 import com.example.fcorganizer.R
 import com.example.fcorganizer.pojos.Listado
 import kotlinx.android.synthetic.main.card_crear_lista.view.*
@@ -37,14 +38,7 @@ class AdaptadorVerListas(private val context: Context, private val listado: List
 
         val card = holder.card
 
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netinfo = cm.activeNetworkInfo
-        if (netinfo != null && netinfo.isConnected) {
-            Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                .apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
-        } else {
-            Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
-        }
+        Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
 
         card.tv_charname.text = item.nombre
         card.tv_charserver.text = item.servidor

@@ -73,7 +73,7 @@ class CrearListaRV : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // INICIALIZA EL RV, HACE LA BUSQUEDA DE LA ID DEL PERSONAJEP Y PROCEDE A RELLENAR EL RV EN EL METODO rellenar RV
+        // INICIALIZA EL RV, HACE LA BUSQUEDA DE LA ID DEL PERSONAJEP Y PROCEDE A RELLENAR EL RV EN EL METODO rellenarRV
 
         dialogo.show(fragmentManager!!, "")
         rv = view.findViewById(R.id.rv_personajes)
@@ -194,6 +194,7 @@ class CrearListaRV : Fragment(){
             dialog.cancel()
         }
 
+        builder.setCancelable(false)
         builder.show()
 
     }

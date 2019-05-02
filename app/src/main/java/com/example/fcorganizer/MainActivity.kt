@@ -1,6 +1,7 @@
 package com.example.fcorganizer
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
@@ -8,8 +9,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -19,21 +22,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
-import com.example.fcorganizer.pojos.Listas
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.provider.FirebaseInitProvider
 import kotlinx.android.synthetic.main.activity_main.*
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
 
 class MainActivity : AppCompatActivity(),
     ListasCreadas.OnFragmentInteractionListener,
@@ -42,7 +32,6 @@ class MainActivity : AppCompatActivity(),
     VerLista.OnFragmentInteractionListener,
     EditarLista.OnFragmentInteractionListener{
 
-    private var conn: Connection? =  null
     private var mAuth: FirebaseAuth? = null
 
     override fun onFragmentInteraction(uri: Uri) {}
@@ -67,26 +56,109 @@ class MainActivity : AppCompatActivity(),
 
     override fun onStart() {
         super.onStart()
-        if (getCurrentUser() != null) {
-            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_logout).isVisible = true
-        } else {
-            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_login).isVisible = true
-        }
+
+        cambiarBotones()
     }
 
-    fun signUp(email: String, pass: String){
+    ///////////// GESTION DE USUARIOS
+    fun signUp(email: String, pass: String, dialog: AlertDialog){
         mAuth!!.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful){
-                // Registro OK
+                dialog.dismiss()
+                cambiarBotones()
             } else {
-                // Fallo al registrar
+                Toast.makeText(this, "Fallo en el registro", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    fun getCurrentUser(): String? {
-        return mAuth!!.currentUser.toString()
+    private fun login(email: String, pass: String, dialog: DialogInterface){
+        mAuth!!.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
+            if (it.isSuccessful){
+                dialog.dismiss()
+                cambiarBotones()
+            } else {
+                Toast.makeText(this, "Fallo al iniciar sesión", Toast.LENGTH_LONG).show()
+            }
+        }
     }
+
+    private fun logout(){
+        mAuth!!.signOut()
+        cambiarBotones()
+    }
+
+    fun cambiarBotones(){
+        if (getCurrentUser().isNullOrBlank()) {
+            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_login).isVisible = true
+            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_logout).isVisible = false
+
+        } else {
+            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_logout).isVisible = true
+            findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_login).isVisible = false
+
+        }
+    }
+
+    private fun getCurrentUser(): String? {
+        return try {
+            Log.i("USUARIO ACTUAL: ", mAuth!!.currentUser!!.email.toString())
+            mAuth!!.currentUser!!.email.toString()
+        }catch (ex:KotlinNullPointerException){
+            null
+        }
+    }
+
+    private fun signdialog(dialogo: Boolean){
+
+        val builder = AlertDialog.Builder(this)
+        builder.setCancelable(false)
+
+        val view = layoutInflater.inflate(R.layout.dialogo_sign, null)
+
+        val etEmail = view.findViewById<EditText>(R.id.et_email)
+        val etPass = view.findViewById<EditText>(R.id.et_pass)
+
+        builder.setView(view)
+
+        if (dialogo) {
+            builder.setTitle("Registrar nuevo usuario")
+            builder.setPositiveButton("Registrar", null)
+            builder.setNegativeButton("Cancelar", null)
+            builder.setNeutralButton("Ya tengo cuenta", null)
+
+            val dig = builder.show()
+
+            dig.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener{
+                when {
+                    etEmail.text.isBlank() -> etEmail.error = "Campo necesario"
+                    etPass.text.isBlank() -> etPass.error = "Campo necesario"
+                    else -> signUp(etEmail.text.toString(), etPass.text.toString(), dig)
+                }
+            }
+
+            dig.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+                dig.dismiss()
+                signdialog(false)
+            }
+        }
+        else {
+            builder.setTitle("Iniciar sesión")
+            builder.setPositiveButton("Entrar", null)
+            builder.setNegativeButton("Cancelar", null)
+
+            val dig = builder.show()
+
+            dig.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                when {
+                    etEmail.text.isBlank() -> etEmail.error = "Campo necesario"
+                    etPass.text.isBlank() -> etPass.error = "Campo necesario"
+                    else -> login(etEmail.text.toString(), etPass.text.toString(), dig)
+                }
+            }
+        }
+    }
+    //////////// FIN DE GESTION DE USUARIOS
 
     // Infla el menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -126,7 +198,9 @@ class MainActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val navController = nav_host_fragment.findNavController()
         when (item!!.itemId){
-             R.id.bm_info -> mostrarInfo()
+            R.id.bm_info -> mostrarInfo()
+            R.id.bm_login -> signdialog(true)
+            R.id.bm_logout -> logout()
         }
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }

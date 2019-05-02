@@ -38,14 +38,7 @@ class AdaptadorCrearLista(private val items: ArrayList<Resultado>, val context: 
     override fun onBindViewHolder(holder: PersonajeVH, position: Int) {
         val item = sortitems[position]
 
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netinfo = cm.activeNetworkInfo
-        if (netinfo != null && netinfo.isConnected){
-            Glide.with(context).load(item.Avatar.toString()).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
-        } else {
-            Glide.with(context).load(item.Avatar.toString()).apply(RequestOptions.circleCropTransform()).override(100)
-                .into(holder.card.char_avatar)
-        }
+        Glide.with(context).load(item.Avatar.toString()).apply(RequestOptions.circleCropTransform()).override(100).into(holder.card.char_avatar)
 
         holder.card.tv_charname.text = item.Name
         holder.card.tv_charserver.text = item.Server

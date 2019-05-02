@@ -142,13 +142,12 @@ class EditarLista : Fragment() {
                 }
 
                 // Comprueba si la lista creada está vacia...
-                if (!lista.isEmpty()) {// Si no lo está, crea la interfaz...
+                if (lista.isNotEmpty()) {// Si no lo está, crea la interfaz...
                     var listaexistente: ArrayList<Listado> = ArrayList()
                     val t = Thread {
                         listaexistente = BaseDatos(context!!).daoListado().getListado(EditarListaArgs.fromBundle(arguments!!).idLista) as ArrayList<Listado>
 
                     }
-
                     t.start()
                     t.join()
                     rv!!.adapter = AdaptadorEditarLista(lista, context!!, listaexistente)

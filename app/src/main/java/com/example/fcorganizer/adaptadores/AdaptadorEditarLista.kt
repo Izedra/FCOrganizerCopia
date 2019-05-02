@@ -17,6 +17,8 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.card_crear_lista.view.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
+import java.net.URL
 
 class AdaptadorEditarLista(
     private val items: ArrayList<Listado>,
@@ -43,8 +45,7 @@ class AdaptadorEditarLista(
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netinfo = cm.activeNetworkInfo
         if (netinfo != null && netinfo.isConnected) {
-            Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                .apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
+            Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
         } else {
             Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(100).into(holder.avatr)
         }
