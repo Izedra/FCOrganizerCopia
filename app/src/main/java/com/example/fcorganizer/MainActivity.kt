@@ -202,7 +202,11 @@ class MainActivity : AppCompatActivity(),
                 "\n" +
                 " * Al intentar borrar una lista, un diálogo nos pedirá confirmación previa (esta acción no es reversible)\n" +
                 "\n" +
-                " * En el momento de editar una lista, una vez accedamos a la interfaz pertinente, simplemente tendremos que dejar seleccionados los personajes que queramos que se queden en la lista, de esta manera, podremos crear listas vacias para un propósito concreto y, más tarde, ampliar y/o reducir su tamaño como lo estimemos oportuno\n")
+                " * En el momento de editar una lista, una vez accedamos a la interfaz pertinente, simplemente tendremos que dejar seleccionados los personajes que queramos que se queden en la lista, de esta manera, podremos crear listas vacias para un propósito concreto y, más tarde, ampliar y/o reducir su tamaño como lo estimemos oportuno\n" +
+                "\n" +
+                " ----\n" +
+                "\n" +
+                " Por ahora el logueo solo sirve para guardar las listas en Firebase, independientemente del correo que se use, no las guarda si se está desconectado de Firebase")
 
         builder.setPositiveButton("OK"){dialog, _ ->
             dialog.dismiss()
