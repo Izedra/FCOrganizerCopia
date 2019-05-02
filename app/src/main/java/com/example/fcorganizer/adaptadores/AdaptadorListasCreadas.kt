@@ -39,14 +39,7 @@ class AdaptadorListasCreadas(
     override fun onBindViewHolder(holder: VHolder, position: Int) {
         val item = items[position]
 
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netinfo = cm.activeNetworkInfo
-        if (netinfo != null && netinfo.isConnected) {
-            Glide.with(context).load(item.avatar).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                .apply(RequestOptions.circleCropTransform()).override(150).into(holder.card.imagen_lista)
-        } else {
-            Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(150).into(holder.card.imagen_lista)
-        }
+        Glide.with(context).load(item.avatar).apply(RequestOptions.circleCropTransform()).override(150).into(holder.card.imagen_lista)
 
         holder.card.tv_lista_nombre.text = item.identificador
         holder.card.tv_nombre_hostchar.text = item.nombre

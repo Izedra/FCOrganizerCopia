@@ -19,6 +19,7 @@ import com.example.fcorganizer.conexiones.RetrofitGenerator
 import com.example.fcorganizer.adaptadores.AdaptadorCrearLista
 import com.example.fcorganizer.database.BaseDatos
 import com.example.fcorganizer.pojos.*
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -204,16 +205,22 @@ class CrearListaRV : Fragment(){
         dialogo.show(fragmentManager!!, "")
         val db = BaseDatos(context!!)
 
+        val auth = MainActivity().getCurrentUser()
+
         GlobalScope.launch {
             idlista = db.daoLista().insertLista(lista)
-
-            val listasref = FirebaseDatabase.getInstance().reference.child(idlista.toString())
-            lista.idLista = idlista.toInt()
-            listasref.setValue(lista)
+            var listasref: DatabaseReference? = null
+            if (auth != null) {
+                listasref = FirebaseDatabase.getInstance().reference.child(idlista.toString())
+                lista.idLista = idlista.toInt()
+                listasref.setValue(lista)
+            }
             listado.forEach {
                 it.idListado = idlista.toInt()
                 db.daoListado().insertListado(it)
-                listasref.child(it.nombre+it.servidor).setValue(it)
+                if (auth != null) {
+                    listasref!!.child(it.nombre + it.servidor).setValue(it)
+                }
 
             }
         }

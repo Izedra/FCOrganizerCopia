@@ -5,6 +5,8 @@ import android.content.DialogInterface
 import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -76,6 +78,7 @@ class MainActivity : AppCompatActivity(),
         mAuth!!.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful){
                 dialog.dismiss()
+                Toast.makeText(this, "${mAuth!!.currentUser!!.email}, login correcto", Toast.LENGTH_LONG).show()
                 cambiarBotones()
             } else {
                 Toast.makeText(this, "Fallo al iniciar sesión", Toast.LENGTH_LONG).show()
@@ -85,6 +88,7 @@ class MainActivity : AppCompatActivity(),
 
     private fun logout(){
         mAuth!!.signOut()
+        Toast.makeText(this, "Desconectado/a", Toast.LENGTH_LONG).show()
         cambiarBotones()
     }
 
@@ -92,15 +96,17 @@ class MainActivity : AppCompatActivity(),
         if (getCurrentUser().isNullOrBlank()) {
             findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_login).isVisible = true
             findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_logout).isVisible = false
-
+            //findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_upload).isVisible = false
+            //findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_download).isVisible = false
         } else {
             findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_logout).isVisible = true
             findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_login).isVisible = false
-
+            //findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_upload).isVisible = true
+            //findViewById<Toolbar>(R.id.toolbar).menu.findItem(R.id.bm_download).isVisible = true
         }
     }
 
-    private fun getCurrentUser(): String? {
+    fun getCurrentUser(): String? {
         return try {
             Log.i("USUARIO ACTUAL: ", mAuth!!.currentUser!!.email.toString())
             mAuth!!.currentUser!!.email.toString()
@@ -118,6 +124,17 @@ class MainActivity : AppCompatActivity(),
 
         val etEmail = view.findViewById<EditText>(R.id.et_email)
         val etPass = view.findViewById<EditText>(R.id.et_pass)
+
+        etEmail.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                etEmail.error = null
+            }
+
+        })
 
         builder.setView(view)
 
@@ -194,6 +211,14 @@ class MainActivity : AppCompatActivity(),
         builder.show()
     }
 
+    fun upload(){
+
+    }
+
+    fun download(){
+
+    }
+
     // Controla los botones del menu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         val navController = nav_host_fragment.findNavController()
@@ -201,6 +226,8 @@ class MainActivity : AppCompatActivity(),
             R.id.bm_info -> mostrarInfo()
             R.id.bm_login -> signdialog(true)
             R.id.bm_logout -> logout()
+            //R.id.bm_download -> download()
+            //R.id.bm_upload -> upload()
         }
         return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
     }

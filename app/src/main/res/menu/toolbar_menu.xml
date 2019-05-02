@@ -12,4 +12,8 @@
           android:id="@+id/fragmentCrearLista"/>
     <item android:title="Borrar" android:icon="@android:drawable/ic_menu_save"
           android:id="@+id/bm_guardar" app:showAsAction="ifRoom" android:visible="false"/>
+    <item android:title="Subir listas" android:id="@+id/bm_upload"
+          app:showAsAction="never" android:visible="false"/>
+    <item android:title="Descargar listas" android:visible="false" android:id="@+id/bm_download"
+          app:showAsAction="never"/>
 </menu>
