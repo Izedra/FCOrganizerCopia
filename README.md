@@ -1,5 +1,6 @@
 # XIV List
-/Proyecto TFG/
+Proyecto TFG
+(min. Android version = 7.0/API 24)
 
 Aplicación pensada para gestionar listas de personajes del MMORPG Final Fantasy XIV
  * Introduciendo un personaje válido, permite acceder al círculo de contactos de este mediante XIVApi
